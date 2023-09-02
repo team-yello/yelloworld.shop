@@ -38,10 +38,8 @@ const TopBar = ({ router }: { router: NextRouter }) => {
         })
         .then((res) => {
           alert("로그인에 성공하였습니다!");
-          console.log(res);
           localStorage.setItem("accessToken", res.data.data.accessToken);
           setIsLogin(true);
-          console.log(localStorage.getItem("accessToken"));
         })
         .catch((reason) => alert(reason));
     }
