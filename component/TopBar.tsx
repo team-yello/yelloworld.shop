@@ -15,29 +15,47 @@ const REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
 const KAKAO_KEY = process.env.NEXT_PUBLIC_KAKAO_REST_KEY;
 
 const TopBar = ({ router }: { router: NextRouter }) => {
+  const [isKakaoLogin, setIsKakaoLogin] = useState<boolean>(false);
   const [isLogin, setIsLogin] = useState<boolean>(false);
 
   const login = () => {
-    if (isLogin) {
+    if (isKakaoLogin) {
+      localStorage.removeItem("accessToken");
+      setIsKakaoLogin(false);
+    } else {
+      window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+    }
+  };
+
+  const passwordLogin = () => {
+    if (localStorage.getItem("accessToken")) {
       localStorage.removeItem("accessToken");
       setIsLogin(false);
     } else {
-      window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+      axios
+        .post(`${SERVER_URI}/api/v1/admin/login`, {
+          password: prompt("비밀 번호를 입력하세요."),
+        })
+        .then((res) => {
+          alert("로그인에 성공하였습니다!");
+          console.log(res);
+          localStorage.setItem("accessToken", res.data.data.accessToken);
+          setIsLogin(true);
+          console.log(localStorage.getItem("accessToken"));
+        })
+        .catch((reason) => alert(reason));
     }
   };
 
   useEffect(() => {
     const { code } = router.query;
     if (localStorage.getItem("accessToken")) {
+      // setIsKakaoLogin(true);
       setIsLogin(true);
     }
 
     if (code) {
       const postLogin = async (accessToken: string) => {
-        console.log({
-          social: "KAKAO",
-          accessToken: accessToken,
-        });
         axios
           .post(`${SERVER_URI}/api/v1/auth/oauth`, {
             social: "KAKAO",
@@ -46,8 +64,8 @@ const TopBar = ({ router }: { router: NextRouter }) => {
           .then((res) => res.data)
           .then((data) => {
             alert("로그인에 성공하였습니다!");
-            localStorage.setItem("accessToken", data.data.accessToken);
-            setIsLogin(true);
+            localStorage.setItem("accessToken", data.accessToken);
+            setIsKakaoLogin(true);
           })
           .catch((reason) => alert(reason));
       };
@@ -96,8 +114,11 @@ const TopBar = ({ router }: { router: NextRouter }) => {
           <Link href="https://apps.apple.com/app/id6451451050">App Store</Link>
         </Header.Item>
         <Header.Item>
-          <Button variant="outline" onClick={() => login()}>
-            {isLogin ? "로그아웃" : "로그인"}
+          {/* <Button variant="outline" onClick={() => login()}>
+            {isKakaoLogin ? "카카오 로그아웃" : "카카오 로그인"}
+          </Button> */}
+          <Button variant="outline" onClick={() => passwordLogin()}>
+            {isLogin ? "비밀번호 로그아웃" : "비밀번호 로그인"}
           </Button>
         </Header.Item>
       </Header>

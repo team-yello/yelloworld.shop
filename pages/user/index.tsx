@@ -74,7 +74,6 @@ const UserPagination = ({
       .then((res) => {
         return res.data;
       })
-      .then((data) => data.data)
       .catch((reason) => reason);
   };
   const { isLoading, isError, data, error } = useQuery<Response, Error>(

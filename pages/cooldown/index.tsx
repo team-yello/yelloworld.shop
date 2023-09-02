@@ -81,7 +81,6 @@ const CooldownPagination = ({
   );
 
   if (isLoading) {
-    console.log(data);
     return (
       <>
         <Spinner size={"large"} sx={{ padding: "300px 400px 300px 400px" }} />
