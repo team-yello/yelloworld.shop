@@ -19,7 +19,7 @@ import {
   Spinner,
   TextInput,
 } from "@primer/react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import { useQuery } from "react-query";
@@ -46,10 +46,6 @@ interface Response {
   data: UserResponse;
 }
 
-interface Error {
-  message: string;
-}
-
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 
 const UserPagination = ({
@@ -58,6 +54,7 @@ const UserPagination = ({
   searchYelloId: string | undefined;
 }) => {
   const [currentPage, setCurrentPage] = useState<number>(0);
+  const router = useRouter();
 
   const userFetcher = async ({ queryKey }: { queryKey: any }) => {
     const [_key, { page, yelloId }] = queryKey;
@@ -71,24 +68,38 @@ const UserPagination = ({
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       })
-      .then((res) => {
-        return res.data;
-      })
-      .catch((reason) => reason);
+      .then((res) => res.data);
   };
-  const { isLoading, isError, data, error } = useQuery<Response, Error>(
-    ["user", { page: currentPage, yelloId: searchYelloId }],
-    userFetcher,
-  );
+  const { isLoading, isError, data, error } = useQuery<
+    Response,
+    AxiosError<Response>
+  >(["user", { page: currentPage, yelloId: searchYelloId }], userFetcher, {
+    retry: false,
+  });
 
   if (isLoading) {
     return (
-      <Spinner size={"large"} sx={{ padding: "300px 400px 300px 400px" }} />
+      <Spinner size={"large"} sx={{ padding: "100px 150px 100px 150px" }} />
     );
   }
 
   if (isError) {
-    return <span>Error: {error.message}</span>;
+    return (
+      <>
+        <div
+          style={{
+            backgroundColor: pallete.semantic_red_100,
+            padding: "100px 150px 100px 150px",
+            borderRadius: "20px",
+          }}
+        >
+          <Headline_00>에러</Headline_00>
+          <Subtitle_01 style={{ color: pallete.semantic_red_500 }}>
+            {error.response?.data?.message}
+          </Subtitle_01>
+        </div>
+      </>
+    );
   }
 
   const onClickDelete = (userId: number) => {
@@ -103,111 +114,105 @@ const UserPagination = ({
           },
         })
         .then((res) => alert(res.data.message))
-        .catch((reason) => alert(reason));
+        .catch((reason) => {
+          alert(reason.response.data.message);
+        });
     }
   };
 
   return (
     <>
-      {data?.status !== 200 ? (
-        <span>{"어드민 권한이 없습니다."}</span>
-      ) : (
-        <>
-          <ActionList>
-            <ActionList.Item
-              sx={{
-                width: "850px",
-                height: "50px",
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                border: `1px solid ${pallete.grayscales_300}`,
-                backgroundColor: pallete.grayscales_300,
-              }}
-            >
-              <div
-                style={{
+      <ActionList>
+        <ActionList.Item
+          sx={{
+            width: "850px",
+            height: "50px",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            border: `1px solid ${pallete.grayscales_300}`,
+            backgroundColor: pallete.grayscales_300,
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+            }}
+          >
+            <Headline_02>{"id"}</Headline_02>
+            <Subtitle_01 style={{ marginLeft: "20px", width: "150px" }}>
+              {"옐로 아이디"}
+            </Subtitle_01>
+            <BodyMedium style={{ marginLeft: "30px" }}>{"이름"}</BodyMedium>
+          </div>
+        </ActionList.Item>
+        {data?.data.userList.length === 0 ? (
+          <ActionList.Item>
+            <ActionList.LeadingVisual>
+              <TrashIcon size={24} />
+            </ActionList.LeadingVisual>
+            <ActionList.Description>
+              {"검색 결과가 없습니다."}
+            </ActionList.Description>
+          </ActionList.Item>
+        ) : (
+          data?.data.userList.map((user, index) => {
+            return (
+              <ActionList.Item
+                key={user.id + index}
+                sx={{
+                  width: "850px",
+                  height: "50px",
                   display: "flex",
                   flexDirection: "row",
+                  alignItems: "center",
+                }}
+                onClick={() => {
+                  router.push(`/user/${user.id}`);
                 }}
               >
-                <Headline_02>{"id"}</Headline_02>
-                <Subtitle_01 style={{ marginLeft: "20px", width: "150px" }}>
-                  {"옐로 아이디"}
-                </Subtitle_01>
-                <BodyMedium style={{ marginLeft: "30px" }}>{"이름"}</BodyMedium>
-              </div>
-            </ActionList.Item>
-            {data &&
-            Array.isArray(data.data.userList) &&
-            !data.data.userList.length ? (
-              <ActionList.Item>
                 <ActionList.LeadingVisual>
-                  <TrashIcon size={24} />
+                  <Headline_02>{user.id}</Headline_02>
                 </ActionList.LeadingVisual>
-                <ActionList.Description>
-                  {"검색 결과가 없습니다."}
-                </ActionList.Description>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                  }}
+                >
+                  <Subtitle_01 style={{ marginLeft: "12px", width: "150px" }}>
+                    {"@" + user.yelloId}
+                  </Subtitle_01>
+                  <BodyMedium style={{ marginLeft: "30px" }}>
+                    {user.name}
+                  </BodyMedium>
+                  <div style={{ margin: "0 30px 0 30px" }}>
+                    {"가입일 : " + user.createdAt}
+                  </div>
+                  <div style={{ margin: "0 30px 0 30px" }}>
+                    {"탈퇴일 : " + user.deletedAt}
+                  </div>
+                </div>
+                <ActionList.TrailingVisual>
+                  <Button onClick={() => onClickDelete(user.id)}>
+                    {"삭제"}
+                  </Button>
+                </ActionList.TrailingVisual>
               </ActionList.Item>
-            ) : (
-              data &&
-              data.data.userList.map((user, index) => {
-                return (
-                  <ActionList.Item
-                    key={user.id + index}
-                    sx={{
-                      width: "850px",
-                      height: "50px",
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                    }}
-                  >
-                    <ActionList.LeadingVisual>
-                      <Headline_02>{user.id}</Headline_02>
-                    </ActionList.LeadingVisual>
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                      }}
-                    >
-                      <Subtitle_01
-                        style={{ marginLeft: "12px", width: "150px" }}
-                      >
-                        {"@" + user.yelloId}
-                      </Subtitle_01>
-                      <BodyMedium style={{ marginLeft: "30px" }}>
-                        {user.name}
-                      </BodyMedium>
-                      <div style={{ margin: "0 30px 0 30px" }}>
-                        {"가입일 : " + user.createdAt}
-                      </div>
-                      <div style={{ margin: "0 30px 0 30px" }}>
-                        {"탈퇴일 : " + user.deletedAt}
-                      </div>
-                    </div>
-                    <ActionList.TrailingVisual>
-                      <Button onClick={() => onClickDelete(user.id)}>
-                        {"삭제"}
-                      </Button>
-                    </ActionList.TrailingVisual>
-                  </ActionList.Item>
-                );
-              })
-            )}
-          </ActionList>
-          <Pagination
-            pageCount={
-              data?.data.pageCount === 0 ? 1 : (data?.data.pageCount as number)
-            }
-            currentPage={currentPage + 1}
-            onPageChange={(e, page) => {
-              setCurrentPage(page - 1);
-            }}
-          />
-        </>
-      )}
+            );
+          })
+        )}
+      </ActionList>
+      <Pagination
+        pageCount={
+          data?.data.pageCount === 0 ? 1 : (data?.data.pageCount as number)
+        }
+        currentPage={currentPage + 1}
+        onPageChange={(e, page) => {
+          setCurrentPage(page - 1);
+        }}
+      />
     </>
   );
 };

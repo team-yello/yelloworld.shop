@@ -49,6 +49,7 @@ interface Response {
 
 interface Error {
   message: string;
+  response: Response;
 }
 
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
@@ -58,6 +59,7 @@ const CooldownPagination = ({
 }: {
   searchYelloId: string | undefined;
 }) => {
+  const router = useRouter();
   const [currentPage, setCurrentPage] = useState<number>(0);
 
   const cooldownFetcher = async ({ queryKey }: { queryKey: any }) => {
@@ -104,14 +106,20 @@ const CooldownPagination = ({
           },
         })
         .then((res) => alert(res.data.message))
-        .catch((reason) => alert(reason));
+        .catch((reason) => {
+          alert(reason.response.data.message);
+        });
     }
   };
+
+  if (data!.status >= 400) {
+    return <span>{"어드민 권한이 없습니다."}</span>;
+  }
 
   return (
     <>
       {data?.status !== 200 ? (
-        <span>{"어드민 권한이 없습니다."}</span>
+        <></>
       ) : (
         <>
           <ActionList>

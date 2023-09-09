@@ -31,6 +31,7 @@ const TopBar = ({ router }: { router: NextRouter }) => {
     if (localStorage.getItem("accessToken")) {
       localStorage.removeItem("accessToken");
       setIsLogin(false);
+      router.push(REDIRECT_URI!);
     } else {
       axios
         .post(`${SERVER_URI}/api/v1/admin/login`, {
@@ -41,7 +42,7 @@ const TopBar = ({ router }: { router: NextRouter }) => {
           localStorage.setItem("accessToken", res.data.data.accessToken);
           setIsLogin(true);
         })
-        .catch((reason) => alert(reason));
+        .catch((reason) => alert(reason.response.data.message));
     }
   };
 
@@ -65,7 +66,7 @@ const TopBar = ({ router }: { router: NextRouter }) => {
             localStorage.setItem("accessToken", data.accessToken);
             setIsKakaoLogin(true);
           })
-          .catch((reason) => alert(reason));
+          .catch((reason) => alert(reason.response.data.message));
       };
       const postAuthCode = async () => {
         axios
@@ -87,7 +88,7 @@ const TopBar = ({ router }: { router: NextRouter }) => {
           .then((res) => res.data)
           .then((data) => data.access_token)
           .then((kakaoAccessToken) => postLogin(kakaoAccessToken))
-          .catch((reason) => alert(reason));
+          .catch((reason) => alert(reason.response.data.message));
       };
 
       postAuthCode();
