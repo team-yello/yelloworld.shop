@@ -4,6 +4,8 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  assetPrefix:
+    process.env.NODE_ENV === "production" ? "http://yelloworld.shop/" : "",
 };
 
 module.exports = nextConfig;
