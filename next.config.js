@@ -1,11 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  output: "export",
   images: {
     unoptimized: true,
   },
-  basePath: "",
+  assetPrefix:
+    process.env.NODE_ENV === "production" ? "http://yelloworld.shop/" : "",
 };
 
 module.exports = nextConfig;
