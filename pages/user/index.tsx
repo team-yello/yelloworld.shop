@@ -14,8 +14,12 @@ import { SearchIcon, TrashIcon } from "@primer/octicons-react";
 import {
   ActionList,
   Avatar,
+  Box,
   Button,
+  FormControl,
   Pagination,
+  Select,
+  SelectPanel,
   Spinner,
   TextInput,
 } from "@primer/react";
@@ -48,22 +52,27 @@ interface Response {
 
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 
-const UserPagination = ({
-  searchYelloId,
-}: {
-  searchYelloId: string | undefined;
-}) => {
-  const [currentPage, setCurrentPage] = useState<number>(0);
+const UserPagination = ({ field, value }: { field: string; value: string }) => {
+  const [requestParams, setRequestParam] = useState({
+    page: 0,
+    field: "",
+    value: "",
+  });
   const router = useRouter();
 
   const userFetcher = async ({ queryKey }: { queryKey: any }) => {
-    const [_key, { page, yelloId }] = queryKey;
+    const [_key, { page, field, value }] = queryKey;
+
+    let params: any = { page };
+
+    if (field !== "" && value !== "") {
+      params.field = field;
+      params.value = value;
+    }
+
     return axios
       .get(`${BASE_URL}/api/v1/admin/user`, {
-        params: {
-          page: page,
-          yelloId: yelloId,
-        },
+        params: params,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
@@ -73,7 +82,7 @@ const UserPagination = ({
   const { isLoading, isError, data, error } = useQuery<
     Response,
     AxiosError<Response>
-  >(["user", { page: currentPage, yelloId: searchYelloId }], userFetcher, {
+  >(["user", { ...requestParams, field, value }], userFetcher, {
     retry: false,
   });
 
@@ -208,9 +217,9 @@ const UserPagination = ({
         pageCount={
           data?.data.pageCount === 0 ? 1 : (data?.data.pageCount as number)
         }
-        currentPage={currentPage + 1}
+        currentPage={requestParams.page + 1}
         onPageChange={(e, page) => {
-          setCurrentPage(page - 1);
+          setRequestParam({ ...requestParams, page: page - 1 });
         }}
       />
     </>
@@ -218,7 +227,9 @@ const UserPagination = ({
 };
 
 const index = () => {
-  const [searchYelloId, setSearchYelloId] = useState<string>("");
+  const [searchField, setSearchField] = useState<string>("yelloId");
+  const [searchValue, setSearchValue] = useState<string>("");
+
   const router = useRouter();
   let inputField = useRef<string>("");
 
@@ -237,25 +248,40 @@ const index = () => {
           }}
         >
           <Headline_00>{"유저"}</Headline_00>
-          <UserPagination
-            searchYelloId={searchYelloId === "" ? undefined : searchYelloId}
-          />
-          <TextInput
-            aria-label="yelloId"
-            name="yelloId"
-            placeholder="옐로 아이디로 검색하기"
-            autoComplete="yelloId"
-            size="large"
-            onChange={(e) => {
-              inputField.current = e.target.value;
-            }}
-            trailingAction={
-              <TextInput.Action
-                onClick={(e) => setSearchYelloId(inputField.current)}
-                icon={SearchIcon}
-              />
-            }
-          />
+          <UserPagination field={searchField} value={searchValue} />
+          <div style={{ display: "flex" }}>
+            <FormControl>
+              <FormControl.Label />
+              <Select
+                size="large"
+                onChange={(e) => {
+                  setSearchField(e.target.value);
+                }}
+              >
+                <Select.Option value="yelloId">옐로 아이디</Select.Option>
+                <Select.Option value="name">이름</Select.Option>
+              </Select>
+            </FormControl>
+            <TextInput
+              aria-label="yelloId"
+              name="yelloId"
+              placeholder={"선택한 값으로 검색하기"}
+              autoComplete="yelloId"
+              size="large"
+              onChange={(e) => {
+                inputField.current = e.target.value;
+              }}
+              trailingAction={
+                <TextInput.Action
+                  onClick={(e) => {
+                    setSearchValue(inputField.current);
+                  }}
+                  icon={SearchIcon}
+                />
+              }
+              sx={{ marginTop: "4px" }}
+            />
+          </div>
         </div>
       </div>
     </>
