@@ -9,6 +9,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { NextRouter, useRouter } from "next/router";
+import { APP_STORE_URL, GOOGLE_PLAY_URL } from "@/util/string";
 
 const SERVER_URI = process.env.NEXT_PUBLIC_SERVER_URL;
 const REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
@@ -105,12 +106,10 @@ const TopBar = ({ router }: { router: NextRouter }) => {
           </Link>
         </Header.Item>
         <Header.Item>
-          <Link href="https://play.google.com/store/apps/details?id=com.el.yello&hl=ko&gl=KR">
-            {"Play Store"}
-          </Link>
+          <Link href={GOOGLE_PLAY_URL}>{"Play Store"}</Link>
         </Header.Item>
         <Header.Item>
-          <Link href="https://apps.apple.com/app/id6451451050">App Store</Link>
+          <Link href={APP_STORE_URL}>App Store</Link>
         </Header.Item>
         <Header.Item>
           {/* <Button variant="outline" onClick={() => login()}>
