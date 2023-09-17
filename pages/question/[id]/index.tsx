@@ -718,17 +718,17 @@ const index = () => {
                         <FormControl>
                           <Radio
                             name={"radio" + color}
-                            value={String(index + 1)}
-                            checked={currentVote.colorIndex === index + 1}
+                            value={String(index)}
+                            checked={currentVote.colorIndex === index}
                             onChange={(e) => {
                               setCurrentVote({
                                 ...currentVote,
-                                colorIndex: index + 1,
+                                colorIndex: index,
                               });
                             }}
                           />
                           <FormControl.Label sx={{ backgroundColor: color }}>
-                            {`${index + 1}번 : ${color}`}
+                            {`${index}번 : ${color}`}
                           </FormControl.Label>
                         </FormControl>
                       </div>
