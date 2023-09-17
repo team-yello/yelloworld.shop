@@ -1,3 +1,7 @@
+type ColorIndex = {
+  [key: string]: string | undefined;
+};
+
 export const pallete = {
   white: "#FFFFFF",
   black: "#191919",
@@ -50,4 +54,20 @@ export const pallete = {
   semantic_gender_male_300: "#ACCEFF",
   semantic_gender_male_500: "#579AFF",
   semantic_gender_male_700: "#1D498E",
+
+  vote_color: [
+    "",
+    "#6437FF",
+    "#62DFAF",
+    "#FF4D8D",
+    "#1DD4ED",
+    "#E170F3",
+    "#2E9AFE",
+    "#FE5B5B",
+    "#31E3C7",
+    "#FF3062",
+    "#6E6EEC",
+    "#1B8CFF",
+    "#EF318B",
+  ],
 };

@@ -25,6 +25,11 @@ const Menu = () => {
               <BodyLarge>{"쿨다운"}</BodyLarge>
             </Link>
           </ActionList.Item>
+          <ActionList.Item>
+            <Link href="/question">
+              <BodyLarge>{"질문"}</BodyLarge>
+            </Link>
+          </ActionList.Item>
         </ActionList>
       </div>
     </>
