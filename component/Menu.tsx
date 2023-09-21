@@ -30,6 +30,11 @@ const Menu = () => {
               <BodyLarge>{"질문"}</BodyLarge>
             </Link>
           </ActionList.Item>
+          <ActionList.Item>
+            <Link href="/notification">
+              <BodyLarge>{"푸쉬 알람"}</BodyLarge>
+            </Link>
+          </ActionList.Item>
         </ActionList>
       </div>
     </>
