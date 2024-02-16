@@ -1,20 +1,20 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import Menu from "@/component/Menu";
-import TopBar from "@/component/TopBar";
-import { pallete } from "@/styles/Color";
+import Menu from '@/component/Menu';
+import TopBar from '@/component/TopBar';
+import { pallete } from '@/styles/Color';
 import {
   BodyLarge,
   Headline_00,
   LabelLarge,
   Subtitle_01,
   Subtitle_02,
-} from "@/styles/Typography";
-import { Button, Spinner, TextInput } from "@primer/react";
-import axios, { AxiosError } from "axios";
-import Image from "next/image";
-import { useRouter } from "next/router";
-import React, { useState } from "react";
-import { useQuery } from "react-query";
+} from '@/styles/Typography';
+import { Button, Spinner, TextInput } from '@primer/react';
+import axios, { AxiosError } from 'axios';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 
 interface UserDetail {
   id?: number;
@@ -52,7 +52,7 @@ const index = () => {
     return axios
       .get(`${BASE_URL}/api/v1/admin/user/${userId}`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         },
       })
       .then((res) => {
@@ -62,15 +62,20 @@ const index = () => {
   const { isLoading, isError, data, error } = useQuery<
     Response,
     AxiosError<Response>
-  >(["userDetail", { userId: router.query.id }], userDetailFetcher, {
-    onSuccess: (data) => {
-      setUserDetailData(data.data);
-    },
+  >({
+    queryKey: ['userDetail', { userId: router.query.id }],
+    queryFn: userDetailFetcher,
   });
+
+  useEffect(() => {
+    if (data?.data) {
+      setUserDetailData(data.data);
+    }
+  }, [data?.data]);
 
   if (isLoading) {
     return (
-      <Spinner size={"large"} sx={{ padding: "300px 400px 300px 400px" }} />
+      <Spinner size={'large'} sx={{ padding: '300px 400px 300px 400px' }} />
     );
   }
 
@@ -80,8 +85,8 @@ const index = () => {
         <div
           style={{
             backgroundColor: pallete.semantic_red_100,
-            padding: "100px 150px 100px 150px",
-            borderRadius: "20px",
+            padding: '100px 150px 100px 150px',
+            borderRadius: '20px',
           }}
         >
           <Headline_00>에러</Headline_00>
@@ -94,7 +99,7 @@ const index = () => {
   }
 
   const onClickPost = (userId: number) => {
-    if (confirm(userId + "를 수정하시겠습니까?")) {
+    if (confirm(userId + '를 수정하시겠습니까?')) {
       let request = userDetailData;
       delete request?.id;
       delete request?.deletedAt;
@@ -103,12 +108,12 @@ const index = () => {
       axios
         .post(`${BASE_URL}/api/v1/admin/user/${userId}`, request, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
           },
         })
         .then((res) => {
           alert(res.data.message);
-          router.push(`/user/${userId}`);
+          router.push(`/admin/user/${userId}`);
         })
         .catch((reason) => {
           alert(reason.response.data.message);
@@ -119,25 +124,25 @@ const index = () => {
   return (
     <>
       <TopBar router={router} />
-      <div style={{ display: "flex" }}>
+      <div style={{ display: 'flex' }}>
         <Menu />
         <div
           style={{
-            width: "100%",
-            height: "90vh",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+            width: '100%',
+            height: '90vh',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
           }}
         >
           <div
             style={{
-              padding: "20px 100px 20px 100px",
-              marginTop: "20px",
+              padding: '20px 100px 20px 100px',
+              marginTop: '20px',
               backgroundColor: pallete.grayscales_100,
-              borderRadius: "20px",
-              display: "flex",
-              flexDirection: "column",
+              borderRadius: '20px',
+              display: 'flex',
+              flexDirection: 'column',
             }}
           >
             <Button
@@ -146,23 +151,23 @@ const index = () => {
                 router.back();
               }}
             >
-              {"이전"}
+              {'이전'}
             </Button>
-            <Headline_00 style={{ marginTop: "40px" }}>
-              {"기본 정보"}
+            <Headline_00 style={{ marginTop: '40px' }}>
+              {'기본 정보'}
             </Headline_00>
-            <div style={{ display: "flex", padding: "10px 0 10px 0" }}>
-              <Subtitle_01 style={{ width: "150px" }}>{"id"}</Subtitle_01>
+            <div style={{ display: 'flex', padding: '10px 0 10px 0' }}>
+              <Subtitle_01 style={{ width: '150px' }}>{'id'}</Subtitle_01>
               <BodyLarge>{data?.data.id}</BodyLarge>
             </div>
-            <div style={{ display: "flex", padding: "10px 0 10px 0" }}>
-              <Subtitle_01 style={{ width: "150px" }}>
-                {"옐로 아이디"}
+            <div style={{ display: 'flex', padding: '10px 0 10px 0' }}>
+              <Subtitle_01 style={{ width: '150px' }}>
+                {'옐로 아이디'}
               </Subtitle_01>
               <TextInput
-                sx={{ width: "90%" }}
-                aria-label="yelloId"
-                name="yelloId"
+                sx={{ width: '90%' }}
+                aria-label='yelloId'
+                name='yelloId'
                 value={userDetailData?.yelloId}
                 onChange={(e) =>
                   setUserDetailData({
@@ -172,12 +177,12 @@ const index = () => {
                 }
               />
             </div>
-            <div style={{ display: "flex", padding: "10px 0 10px 0" }}>
-              <Subtitle_01 style={{ width: "150px" }}>{"이름"}</Subtitle_01>
+            <div style={{ display: 'flex', padding: '10px 0 10px 0' }}>
+              <Subtitle_01 style={{ width: '150px' }}>{'이름'}</Subtitle_01>
               <TextInput
-                sx={{ width: "90%" }}
-                aria-label="name"
-                name="name"
+                sx={{ width: '90%' }}
+                aria-label='name'
+                name='name'
                 value={userDetailData?.name}
                 onChange={(e) =>
                   setUserDetailData({
@@ -187,22 +192,22 @@ const index = () => {
                 }
               />
             </div>
-            <div style={{ display: "flex", padding: "10px 0 10px 0" }}>
-              <Subtitle_01 style={{ width: "150px" }}>
-                {"탈퇴 날짜"}
+            <div style={{ display: 'flex', padding: '10px 0 10px 0' }}>
+              <Subtitle_01 style={{ width: '150px' }}>
+                {'탈퇴 날짜'}
               </Subtitle_01>
               <BodyLarge>{data?.data.deletedAt}</BodyLarge>
             </div>
 
-            <Headline_00 style={{ marginTop: "40px" }}>
-              {"개인 정보"}
+            <Headline_00 style={{ marginTop: '40px' }}>
+              {'개인 정보'}
             </Headline_00>
-            <div style={{ display: "flex", padding: "10px 0 10px 0" }}>
-              <Subtitle_01 style={{ width: "150px" }}>{"성별"}</Subtitle_01>
+            <div style={{ display: 'flex', padding: '10px 0 10px 0' }}>
+              <Subtitle_01 style={{ width: '150px' }}>{'성별'}</Subtitle_01>
               <TextInput
-                sx={{ width: "90%" }}
-                aria-label="gender"
-                name="gender"
+                sx={{ width: '90%' }}
+                aria-label='gender'
+                name='gender'
                 value={userDetailData?.gender}
                 onChange={(e) =>
                   setUserDetailData({
@@ -212,12 +217,12 @@ const index = () => {
                 }
               />
             </div>
-            <div style={{ display: "flex", padding: "10px 0 10px 0" }}>
-              <Subtitle_01 style={{ width: "150px" }}>{"이메일"}</Subtitle_01>
+            <div style={{ display: 'flex', padding: '10px 0 10px 0' }}>
+              <Subtitle_01 style={{ width: '150px' }}>{'이메일'}</Subtitle_01>
               <TextInput
-                sx={{ width: "90%" }}
-                aria-label="email"
-                name="email"
+                sx={{ width: '90%' }}
+                aria-label='email'
+                name='email'
                 value={userDetailData?.email}
                 onChange={(e) =>
                   setUserDetailData({
@@ -227,14 +232,14 @@ const index = () => {
                 }
               />
             </div>
-            <div style={{ display: "flex", padding: "10px 0 10px 0" }}>
-              <Subtitle_01 style={{ width: "150px" }}>
-                {"프로필 사진"}
+            <div style={{ display: 'flex', padding: '10px 0 10px 0' }}>
+              <Subtitle_01 style={{ width: '150px' }}>
+                {'프로필 사진'}
               </Subtitle_01>
               <BodyLarge>
                 {data?.data.profileImage}
                 <Image
-                  alt={"profileImage"}
+                  alt={'profileImage'}
                   width={128}
                   height={128}
                   src={data?.data.profileImage!}
@@ -242,23 +247,23 @@ const index = () => {
               </BodyLarge>
             </div>
 
-            <Headline_00 style={{ marginTop: "40px" }}>
-              {"소셜 로그인 정보"}
+            <Headline_00 style={{ marginTop: '40px' }}>
+              {'소셜 로그인 정보'}
             </Headline_00>
-            <div style={{ display: "flex", padding: "10px 0 10px 0" }}>
-              <Subtitle_01 style={{ width: "150px" }}>
-                {"소셜 로그인 종류"}
+            <div style={{ display: 'flex', padding: '10px 0 10px 0' }}>
+              <Subtitle_01 style={{ width: '150px' }}>
+                {'소셜 로그인 종류'}
               </Subtitle_01>
               <BodyLarge>{data?.data.social}</BodyLarge>
             </div>
-            <div style={{ display: "flex", padding: "10px 0 10px 0" }}>
-              <Subtitle_01 style={{ width: "150px" }}>
-                {"소셜로그인 ID"}
+            <div style={{ display: 'flex', padding: '10px 0 10px 0' }}>
+              <Subtitle_01 style={{ width: '150px' }}>
+                {'소셜로그인 ID'}
               </Subtitle_01>
               <TextInput
-                sx={{ width: "90%" }}
-                aria-label="uuid"
-                name="uuid"
+                sx={{ width: '90%' }}
+                aria-label='uuid'
+                name='uuid'
                 value={userDetailData?.uuid}
                 onChange={(e) =>
                   setUserDetailData({
@@ -269,23 +274,23 @@ const index = () => {
               />
             </div>
 
-            <Headline_00 style={{ marginTop: "40px" }}>
-              {"학교 정보"}
+            <Headline_00 style={{ marginTop: '40px' }}>
+              {'학교 정보'}
             </Headline_00>
-            <div style={{ display: "flex", padding: "10px 0 10px 0" }}>
-              <Subtitle_01 style={{ width: "150px" }}>
-                {"학교 정보"}
+            <div style={{ display: 'flex', padding: '10px 0 10px 0' }}>
+              <Subtitle_01 style={{ width: '150px' }}>
+                {'학교 정보'}
               </Subtitle_01>
               <BodyLarge>{data?.data.group}</BodyLarge>
             </div>
-            <div style={{ display: "flex", padding: "10px 0 10px 0" }}>
-              <Subtitle_01 style={{ width: "150px" }}>
-                {"학교 학번"}
+            <div style={{ display: 'flex', padding: '10px 0 10px 0' }}>
+              <Subtitle_01 style={{ width: '150px' }}>
+                {'학교 학번'}
               </Subtitle_01>
               <TextInput
-                sx={{ width: "90%" }}
-                aria-label="groupAdmissionYear"
-                name="groupAdmissionYear"
+                sx={{ width: '90%' }}
+                aria-label='groupAdmissionYear'
+                name='groupAdmissionYear'
                 value={userDetailData?.groupAdmissionYear}
                 onChange={(e) =>
                   setUserDetailData({
@@ -296,15 +301,15 @@ const index = () => {
               />
             </div>
 
-            <Headline_00 style={{ marginTop: "40px" }}>
-              {"결제 정보"}
+            <Headline_00 style={{ marginTop: '40px' }}>
+              {'결제 정보'}
             </Headline_00>
-            <div style={{ display: "flex", padding: "10px 0 10px 0" }}>
-              <Subtitle_01 style={{ width: "150px" }}>{"포인트"}</Subtitle_01>
+            <div style={{ display: 'flex', padding: '10px 0 10px 0' }}>
+              <Subtitle_01 style={{ width: '150px' }}>{'포인트'}</Subtitle_01>
               <TextInput
-                sx={{ width: "90%" }}
-                aria-label="point"
-                name="point"
+                sx={{ width: '90%' }}
+                aria-label='point'
+                name='point'
                 value={userDetailData?.point}
                 onChange={(e) =>
                   setUserDetailData({
@@ -314,14 +319,14 @@ const index = () => {
                 }
               />
             </div>
-            <div style={{ display: "flex", padding: "10px 0 10px 0" }}>
-              <Subtitle_01 style={{ width: "150px" }}>
-                {"열람권 개수"}
+            <div style={{ display: 'flex', padding: '10px 0 10px 0' }}>
+              <Subtitle_01 style={{ width: '150px' }}>
+                {'열람권 개수'}
               </Subtitle_01>
               <TextInput
-                sx={{ width: "90%" }}
-                aria-label="ticketCount"
-                name="ticketCount"
+                sx={{ width: '90%' }}
+                aria-label='ticketCount'
+                name='ticketCount'
                 value={userDetailData?.ticketCount}
                 onChange={(e) =>
                   setUserDetailData({
@@ -331,14 +336,14 @@ const index = () => {
                 }
               />
             </div>
-            <div style={{ display: "flex", padding: "10px 0 10px 0" }}>
-              <Subtitle_01 style={{ width: "150px" }}>
-                {"구독 현황"}
+            <div style={{ display: 'flex', padding: '10px 0 10px 0' }}>
+              <Subtitle_01 style={{ width: '150px' }}>
+                {'구독 현황'}
               </Subtitle_01>
               <TextInput
-                sx={{ width: "90%" }}
-                aria-label="subscribe"
-                name="subscribe"
+                sx={{ width: '90%' }}
+                aria-label='subscribe'
+                name='subscribe'
                 value={userDetailData?.subscribe}
                 onChange={(e) =>
                   setUserDetailData({
@@ -349,17 +354,17 @@ const index = () => {
               />
             </div>
 
-            <Headline_00 style={{ marginTop: "40px" }}>
-              {"옐로 관련 정보"}
+            <Headline_00 style={{ marginTop: '40px' }}>
+              {'옐로 관련 정보'}
             </Headline_00>
-            <div style={{ display: "flex", padding: "10px 0 10px 0" }}>
-              <Subtitle_01 style={{ width: "150px" }}>
-                {"추천 받은 수"}
+            <div style={{ display: 'flex', padding: '10px 0 10px 0' }}>
+              <Subtitle_01 style={{ width: '150px' }}>
+                {'추천 받은 수'}
               </Subtitle_01>
               <TextInput
-                sx={{ width: "90%" }}
-                aria-label="recommendCount"
-                name="recommendCount"
+                sx={{ width: '90%' }}
+                aria-label='recommendCount'
+                name='recommendCount'
                 value={userDetailData?.recommendCount}
                 onChange={(e) =>
                   setUserDetailData({
@@ -370,17 +375,17 @@ const index = () => {
               />
             </div>
 
-            <Headline_00 style={{ marginTop: "40px" }}>
-              {"푸쉬 알람 정보"}
+            <Headline_00 style={{ marginTop: '40px' }}>
+              {'푸쉬 알람 정보'}
             </Headline_00>
-            <div style={{ display: "flex", padding: "10px 0 10px 0" }}>
-              <Subtitle_01 style={{ width: "150px" }}>
-                {"푸쉬 알람 deviceToken"}
+            <div style={{ display: 'flex', padding: '10px 0 10px 0' }}>
+              <Subtitle_01 style={{ width: '150px' }}>
+                {'푸쉬 알람 deviceToken'}
               </Subtitle_01>
               <TextInput
-                sx={{ width: "90%" }}
-                aria-label="deviceToken"
-                name="deviceToken"
+                sx={{ width: '90%' }}
+                aria-label='deviceToken'
+                name='deviceToken'
                 value={userDetailData?.deviceToken}
                 onChange={(e) =>
                   setUserDetailData({
@@ -397,7 +402,7 @@ const index = () => {
                 onClickPost(Number(router.query.id));
               }}
             >
-              {"확인"}
+              {'확인'}
             </Button>
           </div>
         </div>

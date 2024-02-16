@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import Menu from "@/component/Menu";
-import TopBar from "@/component/TopBar";
-import { pallete } from "@/styles/Color";
+import Menu from '@/component/Menu';
+import TopBar from '@/component/TopBar';
+import { pallete } from '@/styles/Color';
 import {
   BodyMedium,
   Headline_00,
@@ -9,8 +9,8 @@ import {
   Headline_02,
   Subtitle_01,
   Subtitle_02,
-} from "@/styles/Typography";
-import { SearchIcon, TrashIcon } from "@primer/octicons-react";
+} from '@/styles/Typography';
+import { SearchIcon, TrashIcon } from '@primer/octicons-react';
 import {
   ActionList,
   Avatar,
@@ -19,13 +19,13 @@ import {
   Spinner,
   StateLabel,
   TextInput,
-} from "@primer/react";
-import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
-import { useQuery } from "react-query";
-import dayjs from "dayjs";
-import duration from "dayjs/plugin/duration";
-import { useRouter } from "next/router";
+} from '@primer/react';
+import axios from 'axios';
+import React, { useEffect, useRef, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
+import { useRouter } from 'next/router';
 dayjs.extend(duration);
 
 interface Cooldown {
@@ -71,21 +71,21 @@ const CooldownPagination = ({
           yelloId: yelloId,
         },
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         },
       })
       .then((res) => res.data)
       .catch((reason) => reason);
   };
-  const { isLoading, isError, data, error } = useQuery<Response, Error>(
-    ["cooldown", { page: currentPage, yelloId: searchYelloId }],
-    cooldownFetcher,
-  );
+  const { isLoading, isError, data, error } = useQuery<Response, Error>({
+    queryKey: ['cooldown', { page: currentPage, yelloId: searchYelloId }],
+    queryFn: cooldownFetcher,
+  });
 
   if (isLoading) {
     return (
       <>
-        <Spinner size={"large"} sx={{ padding: "300px 400px 300px 400px" }} />
+        <Spinner size={'large'} sx={{ padding: '300px 400px 300px 400px' }} />
       </>
     );
   }
@@ -95,14 +95,14 @@ const CooldownPagination = ({
   }
 
   const onClickDelete = (cooldownId: number) => {
-    if (confirm(cooldownId + "를 삭제하시겠습니까?")) {
+    if (confirm(cooldownId + '를 삭제하시겠습니까?')) {
       axios
         .delete(`${BASE_URL}/api/v1/admin/cooldown`, {
           params: {
             cooldownId: cooldownId,
           },
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
           },
         })
         .then((res) => alert(res.data.message))
@@ -113,7 +113,7 @@ const CooldownPagination = ({
   };
 
   if (data!.status >= 400) {
-    return <span>{"어드민 권한이 없습니다."}</span>;
+    return <span>{'어드민 권한이 없습니다.'}</span>;
   }
 
   return (
@@ -125,28 +125,28 @@ const CooldownPagination = ({
           <ActionList>
             <ActionList.Item
               sx={{
-                width: "850px",
-                height: "50px",
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
+                width: '850px',
+                height: '50px',
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
                 border: `1px solid ${pallete.grayscales_300}`,
                 backgroundColor: pallete.grayscales_300,
               }}
             >
               <div
                 style={{
-                  display: "flex",
-                  flexDirection: "row",
+                  display: 'flex',
+                  flexDirection: 'row',
                 }}
               >
-                <Headline_02>{"id"}</Headline_02>
-                <Subtitle_01 style={{ marginLeft: "20px", width: "150px" }}>
-                  {"옐로 아이디"}
+                <Headline_02>{'id'}</Headline_02>
+                <Subtitle_01 style={{ marginLeft: '20px', width: '150px' }}>
+                  {'옐로 아이디'}
                 </Subtitle_01>
-                <BodyMedium style={{ marginLeft: "30px" }}>{"이름"}</BodyMedium>
-                <BodyMedium style={{ marginLeft: "60px" }}>
-                  {"남은 시간"}
+                <BodyMedium style={{ marginLeft: '30px' }}>{'이름'}</BodyMedium>
+                <BodyMedium style={{ marginLeft: '60px' }}>
+                  {'남은 시간'}
                 </BodyMedium>
               </div>
             </ActionList.Item>
@@ -156,7 +156,7 @@ const CooldownPagination = ({
                   <TrashIcon size={24} />
                 </ActionList.LeadingVisual>
                 <ActionList.Description>
-                  {"검색 결과가 없습니다."}
+                  {'검색 결과가 없습니다.'}
                 </ActionList.Description>
               </ActionList.Item>
             ) : (
@@ -166,11 +166,11 @@ const CooldownPagination = ({
                   <ActionList.Item
                     key={user.id + index}
                     sx={{
-                      width: "850px",
-                      height: "50px",
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
+                      width: '850px',
+                      height: '50px',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
                     }}
                   >
                     <ActionList.LeadingVisual>
@@ -178,37 +178,37 @@ const CooldownPagination = ({
                     </ActionList.LeadingVisual>
                     <div
                       style={{
-                        display: "flex",
-                        flexDirection: "row",
+                        display: 'flex',
+                        flexDirection: 'row',
                       }}
                     >
                       <Subtitle_01
-                        style={{ marginLeft: "12px", width: "150px" }}
+                        style={{ marginLeft: '12px', width: '150px' }}
                       >
-                        {"@" + user.yelloId}
+                        {'@' + user.yelloId}
                       </Subtitle_01>
-                      <BodyMedium style={{ marginLeft: "30px" }}>
+                      <BodyMedium style={{ marginLeft: '30px' }}>
                         {user.name}
                       </BodyMedium>
-                      <BodyMedium style={{ marginLeft: "30px" }}>
+                      <BodyMedium style={{ marginLeft: '30px' }}>
                         {dayjs
                           .duration(dayjs().diff(dayjs(user.createdAt)))
                           .asMinutes() <= 40 ? (
-                          <StateLabel status="pullOpened">
+                          <StateLabel status='pullOpened'>
                             {40 -
                               dayjs
                                 .duration(dayjs().diff(dayjs(user.createdAt)))
                                 .minutes() +
-                              "분 남음"}
+                              '분 남음'}
                           </StateLabel>
                         ) : (
-                          <StateLabel status="pullClosed">{"만료"}</StateLabel>
+                          <StateLabel status='pullClosed'>{'만료'}</StateLabel>
                         )}
                       </BodyMedium>
                     </div>
                     <ActionList.TrailingVisual>
                       <Button onClick={() => onClickDelete(user.id)}>
-                        {"삭제"}
+                        {'삭제'}
                       </Button>
                     </ActionList.TrailingVisual>
                   </ActionList.Item>
@@ -232,34 +232,34 @@ const CooldownPagination = ({
 };
 
 const index = () => {
-  const [searchYelloId, setSearchYelloId] = useState<string>("");
+  const [searchYelloId, setSearchYelloId] = useState<string>('');
   const router = useRouter();
-  let inputField = useRef<string>("");
+  let inputField = useRef<string>('');
 
   return (
     <>
       <TopBar router={router} />
-      <div style={{ display: "flex" }}>
+      <div style={{ display: 'flex' }}>
         <Menu />
         <div
           style={{
-            width: "100%",
-            height: "90vh",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+            width: '100%',
+            height: '90vh',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
           }}
         >
-          <Headline_00>{"쿨다운"}</Headline_00>
+          <Headline_00>{'쿨다운'}</Headline_00>
           <CooldownPagination
-            searchYelloId={searchYelloId === "" ? undefined : searchYelloId}
+            searchYelloId={searchYelloId === '' ? undefined : searchYelloId}
           />
           <TextInput
-            aria-label="yelloId"
-            name="yelloId"
-            placeholder="옐로 아이디로 검색하기"
-            autoComplete="yelloId"
-            size="large"
+            aria-label='yelloId'
+            name='yelloId'
+            placeholder='옐로 아이디로 검색하기'
+            autoComplete='yelloId'
+            size='large'
             onChange={(e) => {
               inputField.current = e.target.value;
             }}

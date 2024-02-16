@@ -1,3 +1,31 @@
 {
-  "extends": "next/core-web-vitals"
+  "root": true,
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:@tanstack/eslint-plugin-query/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": ["./tsconfig.json"]
+  },
+  "plugins": ["react-refresh", "@typescript-eslint", "@emotion"],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "off",
+    "react/no-unknown-property": ["error", { "ignore": ["css"] }],
+    "react-refresh/only-export-components": [
+      "warn",
+      { "allowConstantExport": true }
+    ],
+    "@typescript-eslint/no-namespace": "off"
+  },
+  "ignorePatterns": ["dist/**/*", ".eslintrc.json"]
 }

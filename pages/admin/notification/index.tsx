@@ -1,14 +1,14 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import Card from "@/component/Card";
-import Menu from "@/component/Menu";
-import TopBar from "@/component/TopBar";
-import { pallete } from "@/styles/Color";
-import { Headline_00, Subtitle_01 } from "@/styles/Typography";
-import { Button, Spinner, TextInput } from "@primer/react";
-import axios, { AxiosError } from "axios";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import { useQuery } from "react-query";
+import Card from '@/component/Card';
+import Menu from '@/component/Menu';
+import TopBar from '@/component/TopBar';
+import { pallete } from '@/styles/Color';
+import { Headline_00, Subtitle_01 } from '@/styles/Typography';
+import { Button, Spinner, TextInput } from '@primer/react';
+import axios, { AxiosError } from 'axios';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 
 interface Response<T> {
   status: number;
@@ -38,8 +38,8 @@ const index = () => {
   const [userPage, setUserPage] = useState(0);
   const [userList, setUserList] = useState<User[]>([]);
   const [selectedUserList, setSelectedUserList] = useState<User[]>([]);
-  const [title, setTitle] = useState<string>("");
-  const [message, setMessage] = useState<string>("");
+  const [title, setTitle] = useState<string>('');
+  const [message, setMessage] = useState<string>('');
   const [lastUser, setLastUser] = useState<HTMLDivElement | null>(null);
   const router = useRouter();
 
@@ -48,7 +48,7 @@ const index = () => {
 
     let params: any = { page };
 
-    if (field !== "" && value !== "") {
+    if (field !== '' && value !== '') {
       params.field = field;
       params.value = value;
     }
@@ -57,7 +57,7 @@ const index = () => {
       .get(`${BASE_URL}/api/v1/admin/user`, {
         params: params,
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         },
       })
       .then((res) => res.data);
@@ -74,16 +74,16 @@ const index = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
           },
         },
       )
       .then((res) => res.data)
       .then((data) => {
         setSelectedUserList([]);
-        setTitle("");
-        setMessage("");
-        alert("전송 성공!");
+        setTitle('');
+        setMessage('');
+        alert('전송 성공!');
       })
       .catch((reason) => alert(reason.response.data.message));
   };
@@ -91,7 +91,9 @@ const index = () => {
   const { isLoading, isError, data, error, isSuccess } = useQuery<
     Response<UserResponse>,
     AxiosError<Response<UserResponse>>
-  >(["user", { page: userPage, field: "yelloId", value: "" }], userFetcher, {
+  >({
+    queryKey: ['user', { page: userPage, field: 'yelloId', value: '' }],
+    queryFn: userFetcher,
     retry: false,
   });
 
@@ -122,7 +124,7 @@ const index = () => {
 
   if (isLoading && userPage === 0) {
     return (
-      <Spinner size={"large"} sx={{ padding: "300px 400px 300px 400px" }} />
+      <Spinner size={'large'} sx={{ padding: '300px 400px 300px 400px' }} />
     );
   }
 
@@ -132,8 +134,8 @@ const index = () => {
         <div
           style={{
             backgroundColor: pallete.semantic_red_100,
-            padding: "100px 150px 100px 150px",
-            borderRadius: "20px",
+            padding: '100px 150px 100px 150px',
+            borderRadius: '20px',
           }}
         >
           <Headline_00>에러</Headline_00>
@@ -148,37 +150,37 @@ const index = () => {
   return (
     <>
       <TopBar router={router} />
-      <div style={{ display: "flex" }}>
+      <div style={{ display: 'flex' }}>
         <Menu />
         <div
           style={{
-            width: "100%",
-            height: "90vh",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+            width: '100%',
+            height: '90vh',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
           }}
         >
-          <Headline_00>{"푸쉬 알람"}</Headline_00>
+          <Headline_00>{'푸쉬 알람'}</Headline_00>
           <div
             style={{
-              display: "flex",
-              flexDirection: "column",
+              display: 'flex',
+              flexDirection: 'column',
               backgroundColor: pallete.grayscales_500,
-              padding: "50px 50px 50px",
-              borderRadius: "20px",
+              padding: '50px 50px 50px',
+              borderRadius: '20px',
             }}
           >
-            <div style={{ display: "flex", flexDirection: "row" }}>
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
               <div
                 style={{
-                  display: "flex",
-                  flexDirection: "column",
+                  display: 'flex',
+                  flexDirection: 'column',
                   backgroundColor: pallete.semantic_gender_male_500,
                 }}
               >
-                <Headline_00>{"유저"}</Headline_00>
-                <div style={{ height: "600px", overflowY: "scroll" }}>
+                <Headline_00>{'유저'}</Headline_00>
+                <div style={{ height: '600px', overflowY: 'scroll' }}>
                   {userList.map((user, index) => {
                     return (
                       <Card
@@ -190,7 +192,7 @@ const index = () => {
                               (selectedUser) => selectedUser.id === user.id,
                             )
                           ) {
-                            alert("이미 보낼유저에 담았음");
+                            alert('이미 보낼유저에 담았음');
                           } else {
                             setSelectedUserList([...selectedUserList, user]);
                           }
@@ -207,17 +209,17 @@ const index = () => {
               </div>
               <div
                 style={{
-                  display: "flex",
-                  flexDirection: "column",
+                  display: 'flex',
+                  flexDirection: 'column',
                   backgroundColor: pallete.semantic_gender_female_500,
-                  marginLeft: "50px",
+                  marginLeft: '50px',
                 }}
               >
-                <Headline_00>{"보낼 유저"}</Headline_00>
+                <Headline_00>{'보낼 유저'}</Headline_00>
                 <div
                   style={{
-                    height: "600px",
-                    overflowY: "scroll",
+                    height: '600px',
+                    overflowY: 'scroll',
                   }}
                 >
                   {selectedUserList.map((user, index) => {
@@ -243,39 +245,39 @@ const index = () => {
             <div
               style={{
                 borderTop: `3px solid ${pallete.grayscales_400}`,
-                margin: "30px 0 30px 0",
+                margin: '30px 0 30px 0',
               }}
             />
 
-            <Headline_00>{"푸쉬 알람 내용"}</Headline_00>
+            <Headline_00>{'푸쉬 알람 내용'}</Headline_00>
 
-            <div style={{ display: "flex" }}>
-              <Subtitle_01>{"제목"}</Subtitle_01>
+            <div style={{ display: 'flex' }}>
+              <Subtitle_01>{'제목'}</Subtitle_01>
               <TextInput
-                aria-label="noti-title"
-                name="noti-title"
-                placeholder="푸쉬 알람 제목"
-                autoComplete="noti-title"
+                aria-label='noti-title'
+                name='noti-title'
+                placeholder='푸쉬 알람 제목'
+                autoComplete='noti-title'
                 sx={{
-                  width: "500px",
-                  height: "50px",
-                  marginLeft: "50px",
+                  width: '500px',
+                  height: '50px',
+                  marginLeft: '50px',
                 }}
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
             </div>
-            <div style={{ display: "flex" }}>
-              <Subtitle_01>{"내용"}</Subtitle_01>
+            <div style={{ display: 'flex' }}>
+              <Subtitle_01>{'내용'}</Subtitle_01>
               <TextInput
-                aria-label="noti-content"
-                name="noti-content"
-                placeholder="푸쉬 알람 내용"
-                autoComplete="noti-content"
+                aria-label='noti-content'
+                name='noti-content'
+                placeholder='푸쉬 알람 내용'
+                autoComplete='noti-content'
                 sx={{
-                  width: "500px",
-                  height: "50px",
-                  marginLeft: "50px",
+                  width: '500px',
+                  height: '50px',
+                  marginLeft: '50px',
                 }}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
@@ -287,7 +289,7 @@ const index = () => {
                 onClickNotificationSend();
               }}
             >
-              {"전송"}
+              {'전송'}
             </Button>
           </div>
         </div>
