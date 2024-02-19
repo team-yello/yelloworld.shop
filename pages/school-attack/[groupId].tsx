@@ -19,7 +19,7 @@ import { Collapse } from '@/component/Collapse';
 import { Button } from '@/component/Button';
 import { pallete } from '@/styles/Color';
 
-import { MainLayout, SystemLayout } from './styled';
+import { MainLayout, SystemLayout } from '../../styles/SchoolAttack.styled';
 
 import background_main from '@/public/background_main.svg';
 import message_square_svg from '@/component/Icon/asset/message-square.svg';
@@ -276,6 +276,7 @@ export default function SchoolAttack() {
                     {page.data.data.statisticsList.map((statistics, index) => {
                       return (
                         <ListItem
+                          key={index}
                           groupName={statistics.userGroupName}
                           rank={statistics.rankNumber}
                           diffRank={

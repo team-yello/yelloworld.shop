@@ -59,10 +59,12 @@ const UserPagination = ({ field, value }: { field: string; value: string }) => {
   });
   const router = useRouter();
 
+  // eslint-disable-next-line
   const questionFetcher = async ({ queryKey }: { queryKey: any }) => {
     const [_key, { page, field, value }] = queryKey;
 
-    let params: any = { page };
+    // eslint-disable-next-line
+    const params: any = { page };
 
     if (field !== '' && value !== '') {
       params.field = field;
@@ -370,7 +372,7 @@ const index = () => {
   const [searchValue, setSearchValue] = useState<string>('');
 
   const router = useRouter();
-  let inputField = useRef<string>('');
+  const inputField = useRef<string>('');
 
   return (
     <>

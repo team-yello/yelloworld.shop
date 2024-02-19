@@ -14,7 +14,6 @@ import {
   LabelLarge,
   LabelMedium,
   LabelSmall,
-  Button,
 } from './Typography';
 
 export {
@@ -33,5 +32,4 @@ export {
   LabelLarge,
   LabelMedium,
   LabelSmall,
-  Button,
 };
