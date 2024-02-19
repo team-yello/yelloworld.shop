@@ -62,6 +62,7 @@ const CooldownPagination = ({
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState<number>(0);
 
+  // eslint-disable-next-line
   const cooldownFetcher = async ({ queryKey }: { queryKey: any }) => {
     const [_key, { page, yelloId }] = queryKey;
     return axios
@@ -234,7 +235,7 @@ const CooldownPagination = ({
 const index = () => {
   const [searchYelloId, setSearchYelloId] = useState<string>('');
   const router = useRouter();
-  let inputField = useRef<string>('');
+  const inputField = useRef<string>('');
 
   return (
     <>

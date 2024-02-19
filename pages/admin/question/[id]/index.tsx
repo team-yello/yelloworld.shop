@@ -85,6 +85,7 @@ const index = () => {
   const [voteList, setVoteList] = useState<Vote[]>([]);
   const router = useRouter();
 
+  // eslint-disable-next-line
   const questionDetailFetcher = async ({ queryKey }: { queryKey: any }) => {
     const [_key, { questionId }] = queryKey;
     return axios
@@ -98,10 +99,12 @@ const index = () => {
       });
   };
 
+  // eslint-disable-next-line
   const userFetcher = async ({ queryKey }: { queryKey: any }) => {
     const [_key, { page, field, value }] = queryKey;
 
-    let params: any = { page };
+    // eslint-disable-next-line
+    const params: any = { page };
 
     if (field !== '' && value !== '') {
       params.field = field;
@@ -432,10 +435,12 @@ const index = () => {
                       <Headline_02
                         style={{ width: '50px', marginLeft: '16px' }}
                       >
+                        {/* eslint-disable-next-line */}
                         {vote.sender?.id}
                       </Headline_02>
 
                       <Image
+                        // eslint-disable-next-line
                         src={vote.sender?.imageUrl!}
                         alt={'image'}
                         width={24}
@@ -476,6 +481,7 @@ const index = () => {
                       </Headline_02>
 
                       <Image
+                        // eslint-disable-next-line
                         src={vote.receiver?.imageUrl!}
                         alt={'image'}
                         width={24}
@@ -613,6 +619,7 @@ const index = () => {
                       </Headline_02>
 
                       <Image
+                        // eslint-disable-next-line
                         src={currentVote?.sender.imageUrl!}
                         alt={'image'}
                         width={48}
@@ -653,10 +660,12 @@ const index = () => {
                       <Headline_02
                         style={{ width: '50px', marginLeft: '16px' }}
                       >
+                        {/* eslint-disable-next-line */}
                         {currentVote?.receiver.id}
                       </Headline_02>
 
                       <Image
+                        // eslint-disable-next-line
                         src={currentVote?.receiver.imageUrl!}
                         alt={'image'}
                         width={48}

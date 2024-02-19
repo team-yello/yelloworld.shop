@@ -46,6 +46,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 const index = () => {
   const router = useRouter();
 
+  // eslint-disable-next-line
   const userDetailFetcher = async ({ queryKey }: { queryKey: any }) => {
     const [_key, { userId }] = queryKey;
     return axios
@@ -188,6 +189,7 @@ const index = () => {
                   alt={'profileImage'}
                   width={128}
                   height={128}
+                  // eslint-disable-next-line
                   src={data?.data.profileImage!}
                 />
               </BodyLarge>

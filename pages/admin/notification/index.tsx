@@ -43,10 +43,11 @@ const index = () => {
   const [lastUser, setLastUser] = useState<HTMLDivElement | null>(null);
   const router = useRouter();
 
+  // eslint-disable-next-line
   const userFetcher = async ({ queryKey }: { queryKey: any }) => {
     const [_key, { page, field, value }] = queryKey;
-
-    let params: any = { page };
+    // eslint-disable-next-line
+    const params: any = { page };
 
     if (field !== '' && value !== '') {
       params.field = field;

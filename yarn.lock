@@ -243,6 +243,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@emotion/eslint-plugin@npm:^11.11.0":
+  version: 11.11.0
+  resolution: "@emotion/eslint-plugin@npm:11.11.0"
+  peerDependencies:
+    eslint: 6 || 7 || 8
+  checksum: 2d555b6790700e0d0c2862d4aa2fd697ea5851faa7e406ab459028e66daad2ee0dc3dec29362c2edc2656a63f826ac15629112d3e9aca64323fa40f9e5674bd4
+  languageName: node
+  linkType: hard
+
 "@emotion/hash@npm:^0.9.1":
   version: 0.9.1
   resolution: "@emotion/hash@npm:0.9.1"
@@ -913,6 +922,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/eslint-plugin-query@npm:^5.20.1":
+  version: 5.20.1
+  resolution: "@tanstack/eslint-plugin-query@npm:5.20.1"
+  dependencies:
+    "@typescript-eslint/utils": ^6.20.0
+  peerDependencies:
+    eslint: ^8.0.0
+  checksum: dd8542271643b9d1f033dd96340f0b3b00771cbf6792aa71ce657a36992386ee9da92cccfd3cb55c432477e89821661e0adfec51972333372114ce41abd1f11c
+  languageName: node
+  linkType: hard
+
 "@tanstack/query-core@npm:5.20.5":
   version: 5.20.5
   resolution: "@tanstack/query-core@npm:5.20.5"
@@ -1293,7 +1313,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@npm:6.21.0":
+"@typescript-eslint/utils@npm:6.21.0, @typescript-eslint/utils@npm:^6.20.0":
   version: 6.21.0
   resolution: "@typescript-eslint/utils@npm:6.21.0"
   dependencies:
@@ -1807,9 +1827,9 @@ __metadata:
   linkType: hard
 
 "caniuse-lite@npm:^1.0.30001406, caniuse-lite@npm:^1.0.30001517, caniuse-lite@npm:^1.0.30001520":
-  version: 1.0.30001522
-  resolution: "caniuse-lite@npm:1.0.30001522"
-  checksum: 56e3551c02ae595085114073cf242f7d9d54d32255c80893ca9098a44f44fc6eef353936f234f31c7f4cb894dd2b6c9c4626e30649ee29e04d70aa127eeefeb0
+  version: 1.0.30001588
+  resolution: "caniuse-lite@npm:1.0.30001588"
+  checksum: 2ab5fcec8fd3ee5d817a44bf1fb69804a6924d190e476863fb519692cd3e85a3a775bf4a2b6ba793f8db592ca61255b7f77f3d773ff7d42b452216f180bcdd2f
   languageName: node
   linkType: hard
 
@@ -6576,6 +6596,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"update-browserslist-db@npm:latest":
+  version: 1.0.13
+  resolution: "update-browserslist-db@npm:1.0.13"
+  dependencies:
+    escalade: ^3.1.1
+    picocolors: ^1.0.0
+  peerDependencies:
+    browserslist: ">= 4.21.0"
+  bin:
+    update-browserslist-db: cli.js
+  checksum: 1e47d80182ab6e4ad35396ad8b61008ae2a1330221175d0abd37689658bdb61af9b705bfc41057fd16682474d79944fb2d86767c5ed5ae34b6276b9bed353322
+  languageName: node
+  linkType: hard
+
 "uri-js@npm:^4.2.2":
   version: 4.4.1
   resolution: "uri-js@npm:4.4.1"
@@ -6772,10 +6806,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "yello-admin@workspace:."
   dependencies:
+    "@emotion/eslint-plugin": ^11.11.0
     "@emotion/react": ^11.11.3
     "@emotion/styled": ^11.11.0
     "@primer/octicons-react": ^19.6.0
     "@primer/react": ^35.28.0
+    "@tanstack/eslint-plugin-query": ^5.20.1
     "@tanstack/react-query": ^5.17.0
     "@tanstack/react-query-devtools": ^5.17.21
     "@types/node": 20.5.4
@@ -6807,6 +6843,7 @@ __metadata:
     tailwindcss: 3.3.3
     typescript: latest
     typescript-plugin-css-modules: ^5.0.2
+    update-browserslist-db: latest
   languageName: unknown
   linkType: soft
 

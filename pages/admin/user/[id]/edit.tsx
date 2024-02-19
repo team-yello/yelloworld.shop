@@ -47,6 +47,7 @@ const index = () => {
   const router = useRouter();
   const [userDetailData, setUserDetailData] = useState<UserDetail>();
 
+  // eslint-disable-next-line
   const userDetailFetcher = async ({ queryKey }: { queryKey: any }) => {
     const [_key, { userId }] = queryKey;
     return axios
@@ -100,7 +101,7 @@ const index = () => {
 
   const onClickPost = (userId: number) => {
     if (confirm(userId + '를 수정하시겠습니까?')) {
-      let request = userDetailData;
+      const request = userDetailData;
       delete request?.id;
       delete request?.deletedAt;
       delete request?.group;
@@ -242,6 +243,7 @@ const index = () => {
                   alt={'profileImage'}
                   width={128}
                   height={128}
+                  // eslint-disable-next-line
                   src={data?.data.profileImage!}
                 />
               </BodyLarge>
