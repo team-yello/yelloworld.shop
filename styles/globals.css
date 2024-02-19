@@ -3,3 +3,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+div {
+  display: block;
+  white-space: pre-wrap;
+}
+
+body {
+  background-color: black;
+}

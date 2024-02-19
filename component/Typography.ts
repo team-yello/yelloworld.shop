@@ -24,6 +24,14 @@ export const Headline_02 = styled.div`
   line-height: 28px;
 `;
 
+export const Headline_02_Light = styled.div`
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 28px;
+`;
+
 export const Subtitle_01 = styled.div`
   font-family: 'Pretendard';
   font-style: normal;
@@ -102,12 +110,4 @@ export const Body_01 = styled.div`
   font-weight: 500;
   font-size: 15px;
   line-height: 24px;
-`;
-
-export const Button = styled.div`
-  font-family: 'Pretendard';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 13px;
-  line-height: 18px;
 `;

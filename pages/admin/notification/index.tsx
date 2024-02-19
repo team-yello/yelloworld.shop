@@ -3,7 +3,7 @@ import Card from '@/component/Card';
 import Menu from '@/component/Menu';
 import TopBar from '@/component/TopBar';
 import { pallete } from '@/styles/Color';
-import { Headline_00, Subtitle_01 } from '@/styles/Typography';
+import { Headline_00, Subtitle_01 } from '@/component/Typography';
 import { Button, Spinner, TextInput } from '@primer/react';
 import axios, { AxiosError } from 'axios';
 import { useRouter } from 'next/router';
@@ -133,13 +133,13 @@ const index = () => {
       <>
         <div
           style={{
-            backgroundColor: pallete.semantic_red_100,
+            backgroundColor: pallete['semantic-red-100'],
             padding: '100px 150px 100px 150px',
             borderRadius: '20px',
           }}
         >
           <Headline_00>에러</Headline_00>
-          <Subtitle_01 style={{ color: pallete.semantic_red_500 }}>
+          <Subtitle_01 style={{ color: pallete['semantic-red-500'] }}>
             {error?.response?.data?.message}
           </Subtitle_01>
         </div>
@@ -150,7 +150,7 @@ const index = () => {
   return (
     <>
       <TopBar router={router} />
-      <div style={{ display: 'flex' }}>
+      <div className='bg-white' style={{ display: 'flex' }}>
         <Menu />
         <div
           style={{
@@ -166,7 +166,7 @@ const index = () => {
             style={{
               display: 'flex',
               flexDirection: 'column',
-              backgroundColor: pallete.grayscales_500,
+              backgroundColor: pallete['grayscales-500'],
               padding: '50px 50px 50px',
               borderRadius: '20px',
             }}
@@ -176,7 +176,7 @@ const index = () => {
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
-                  backgroundColor: pallete.semantic_gender_male_500,
+                  backgroundColor: pallete['semantic-gender-male-500'],
                 }}
               >
                 <Headline_00>{'유저'}</Headline_00>
@@ -211,7 +211,7 @@ const index = () => {
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
-                  backgroundColor: pallete.semantic_gender_female_500,
+                  backgroundColor: pallete['semantic-gender-female-500'],
                   marginLeft: '50px',
                 }}
               >
@@ -244,7 +244,7 @@ const index = () => {
 
             <div
               style={{
-                borderTop: `3px solid ${pallete.grayscales_400}`,
+                borderTop: `3px solid ${pallete['grayscales-400']}`,
                 margin: '30px 0 30px 0',
               }}
             />
@@ -284,7 +284,7 @@ const index = () => {
               />
             </div>
             <Button
-              sx={{ backgroundColor: pallete.semantic_green_500 }}
+              sx={{ backgroundColor: pallete['semantic-green-500'] }}
               onClick={() => {
                 onClickNotificationSend();
               }}

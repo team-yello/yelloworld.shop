@@ -8,7 +8,7 @@ import {
   LabelLarge,
   Subtitle_01,
   Subtitle_02,
-} from '@/styles/Typography';
+} from '@/component/Typography';
 import { Button, Spinner } from '@primer/react';
 import axios, { AxiosError } from 'axios';
 import Image from 'next/image';
@@ -97,13 +97,13 @@ const index = () => {
       <>
         <div
           style={{
-            backgroundColor: pallete.semantic_red_100,
+            backgroundColor: pallete['semantic-red-100'],
             padding: '100px 150px 100px 150px',
             borderRadius: '20px',
           }}
         >
           <Headline_00>에러</Headline_00>
-          <Subtitle_01 style={{ color: pallete.semantic_red_500 }}>
+          <Subtitle_01 style={{ color: pallete['semantic-red-500'] }}>
             {error.response?.data?.message}
           </Subtitle_01>
         </div>
@@ -114,7 +114,7 @@ const index = () => {
   return (
     <>
       <TopBar router={router} />
-      <div style={{ display: 'flex' }}>
+      <div className='bg-white' style={{ display: 'flex' }}>
         <Menu />
         <div
           style={{
@@ -129,14 +129,14 @@ const index = () => {
             style={{
               padding: '20px 100px 20px 100px',
               marginTop: '20px',
-              backgroundColor: pallete.grayscales_100,
+              backgroundColor: pallete['grayscales-100'],
               borderRadius: '20px',
               display: 'flex',
               flexDirection: 'column',
             }}
           >
             <Button
-              sx={{ backgroundColor: pallete.semantic_green_500 }}
+              sx={{ backgroundColor: pallete['semantic-green-500'] }}
               onClick={() => {
                 router.push('/admin/user');
               }}
@@ -266,13 +266,13 @@ const index = () => {
             </div>
 
             <Button
-              sx={{ backgroundColor: pallete.yello_main_500 }}
+              sx={{ backgroundColor: pallete['yello-main-500'] }}
               onClick={() => router.push(`/admin/user/${data?.data.id}/edit`)}
             >
               {'수정'}
             </Button>
             <Button
-              sx={{ backgroundColor: pallete.semantic_red_500 }}
+              sx={{ backgroundColor: pallete['semantic-red-500'] }}
               onClick={() => onClickDelete(data?.data.id as number)}
             >
               {'삭제'}

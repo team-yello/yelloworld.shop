@@ -2,7 +2,7 @@
 import { Button, Header } from '@primer/react';
 import Image from 'next/image';
 import logo from '../public/app_icon.svg';
-import { Headline_00 } from '@/styles/Typography';
+import { Headline_00 } from '@/component/Typography';
 import { pallete } from '@/styles/Color';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
@@ -98,7 +98,7 @@ const TopBar = ({ router }: { router: NextRouter }) => {
 
   return (
     <>
-      <Header sx={{ backgroundColor: pallete.yello_sub_400 }}>
+      <Header sx={{ backgroundColor: pallete['yello-sub-400'] }}>
         <Header.Item>
           <Link href='/admin'>
             <Image alt='logo' src={logo} width={48} height={48} />

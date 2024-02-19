@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import Menu from '@/component/Menu';
 import TopBar from '@/component/TopBar';
-import { pallete } from '@/styles/Color';
+import { pallete, palleteArray } from '@/styles/Color';
 import {
   BodyLarge,
   BodyMedium,
@@ -11,7 +11,7 @@ import {
   LabelLarge,
   Subtitle_01,
   Subtitle_02,
-} from '@/styles/Typography';
+} from '@/component/Typography';
 import {
   ActionList,
   Button,
@@ -197,13 +197,13 @@ const index = () => {
       <>
         <div
           style={{
-            backgroundColor: pallete.semantic_red_100,
+            backgroundColor: pallete['semantic-red-100'],
             padding: '100px 150px 100px 150px',
             borderRadius: '20px',
           }}
         >
           <Headline_00>에러</Headline_00>
-          <Subtitle_01 style={{ color: pallete.semantic_red_500 }}>
+          <Subtitle_01 style={{ color: pallete['semantic-red-500'] }}>
             {error?.response?.data?.message}
           </Subtitle_01>
         </div>
@@ -278,7 +278,7 @@ const index = () => {
   return (
     <>
       <TopBar router={router} />
-      <div style={{ display: 'flex' }}>
+      <div className='bg-white' style={{ display: 'flex' }}>
         <Menu />
         <div
           style={{
@@ -293,14 +293,14 @@ const index = () => {
             style={{
               padding: '20px 100px 20px 100px',
               marginTop: '20px',
-              backgroundColor: pallete.grayscales_100,
+              backgroundColor: pallete['grayscales-100'],
               borderRadius: '20px',
               display: 'flex',
               flexDirection: 'column',
             }}
           >
             <Button
-              sx={{ backgroundColor: pallete.semantic_green_500 }}
+              sx={{ backgroundColor: pallete['semantic-green-500'] }}
               onClick={() => {
                 router.push('/admin/question');
               }}
@@ -374,7 +374,7 @@ const index = () => {
             </Button> */}
             </div>
             <Button
-              sx={{ backgroundColor: pallete.semantic_red_500 }}
+              sx={{ backgroundColor: pallete['semantic-red-500'] }}
               onClick={() => onClickDelete(data?.data.id as number)}
             >
               {'삭제'}
@@ -383,7 +383,7 @@ const index = () => {
             <div
               style={{
                 width: '100%',
-                borderTop: `1px solid ${pallete.grayscales_800}`,
+                borderTop: `1px solid ${pallete['grayscales-800']}`,
                 margin: '32px 0 32px 0',
               }}
             ></div>
@@ -403,7 +403,10 @@ const index = () => {
               return (
                 <ActionList.Item
                   key={vote.keyword! + index}
-                  sx={{ backgroundColor: pallete.vote_color[vote.colorIndex] }}
+                  sx={{
+                    backgroundColor:
+                      palleteArray['vote-color'][vote.colorIndex],
+                  }}
                 >
                   <ActionList.LeadingVisual>
                     <Headline_00>{index + 1}</Headline_00>
@@ -540,7 +543,7 @@ const index = () => {
                         </Headline_00>
                         <BodyLarge
                           style={{
-                            backgroundColor: pallete.yello_main_500,
+                            backgroundColor: pallete['yello-main-500'],
                             color: pallete.black,
                             display: 'flex',
                             alignItems: 'center',
@@ -564,7 +567,7 @@ const index = () => {
             })}
 
             <Button
-              sx={{ backgroundColor: pallete.semantic_green_500 }}
+              sx={{ backgroundColor: pallete['semantic-green-500'] }}
               onClick={() => {
                 onClickVoteSend();
               }}
@@ -578,7 +581,7 @@ const index = () => {
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                backgroundColor: pallete.grayscales_400,
+                backgroundColor: pallete['grayscales-400'],
                 padding: '10px 10px 10px 10px',
               }}
             >
@@ -709,7 +712,7 @@ const index = () => {
                   flexWrap: 'wrap',
                 }}
               >
-                {pallete.vote_color.map((color, index) => {
+                {palleteArray['vote-color'].map((color, index) => {
                   if (index !== 0) {
                     return (
                       <div
@@ -738,7 +741,7 @@ const index = () => {
                 })}
               </div>
               <Button
-                sx={{ backgroundColor: pallete.semantic_yellow_500 }}
+                sx={{ backgroundColor: pallete['semantic-yellow-500'] }}
                 onClick={() => {
                   if (
                     currentVote.colorIndex &&

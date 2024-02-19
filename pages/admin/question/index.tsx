@@ -10,7 +10,7 @@ import {
   Headline_02,
   Subtitle_01,
   Subtitle_02,
-} from '@/styles/Typography';
+} from '@/component/Typography';
 import { SearchIcon, TrashIcon } from '@primer/octicons-react';
 import {
   ActionList,
@@ -98,13 +98,13 @@ const UserPagination = ({ field, value }: { field: string; value: string }) => {
       <>
         <div
           style={{
-            backgroundColor: pallete.semantic_red_100,
+            backgroundColor: pallete['semantic-red-100'],
             padding: '100px 150px 100px 150px',
             borderRadius: '20px',
           }}
         >
           <Headline_00>에러</Headline_00>
-          <Subtitle_01 style={{ color: pallete.semantic_red_500 }}>
+          <Subtitle_01 style={{ color: pallete['semantic-red-500'] }}>
             {error.response?.data?.message}
           </Subtitle_01>
         </div>
@@ -132,7 +132,7 @@ const UserPagination = ({ field, value }: { field: string; value: string }) => {
 
   return (
     <>
-      <ActionList>
+      <ActionList className='bg-white'>
         <ActionList.Item
           sx={{
             width: '1000px',
@@ -140,8 +140,8 @@ const UserPagination = ({ field, value }: { field: string; value: string }) => {
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
-            border: `1px solid ${pallete.grayscales_300}`,
-            backgroundColor: pallete.grayscales_300,
+            border: `1px solid ${pallete['grayscales-300']}`,
+            backgroundColor: pallete['grayscales-300'],
           }}
         >
           <div
@@ -375,7 +375,7 @@ const index = () => {
   return (
     <>
       <TopBar router={router} />
-      <div style={{ display: 'flex' }}>
+      <div className='bg-white' style={{ display: 'flex' }}>
         <Menu />
         <div
           style={{

@@ -1,20 +1,17 @@
-import styled from 'styled-components';
-import { ActionList, Header } from '@primer/react';
-import Image from 'next/image';
-import logo from '../public/app_icon.svg';
-import { Headline_00 } from '@/styles/Typography';
-import { pallete } from '@/styles/Color';
+import React from 'react';
+import { useRouter } from 'next/router';
+
+import { Headline_00 } from '@/component/Typography';
 import TopBar from '@/component/TopBar';
 import Menu from '@/component/Menu';
-import { useRouter } from 'next/router';
 
 export default function Home() {
   const router = useRouter();
 
   return (
-    <>
+    <div className='bg-white'>
       <TopBar router={router} />
-      <div style={{ display: 'flex' }}>
+      <div className='bg-white' style={{ display: 'flex' }}>
         <Menu />
         <div
           style={{
@@ -28,6 +25,6 @@ export default function Home() {
           <Headline_00>{'Yello 어드민에 오신걸 환영합니다.'}</Headline_00>
         </div>
       </div>
-    </>
+    </div>
   );
 }

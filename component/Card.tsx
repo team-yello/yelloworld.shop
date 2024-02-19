@@ -1,5 +1,5 @@
 import { pallete } from '@/styles/Color';
-import { BodyMedium, Headline_02, Subtitle_02 } from '@/styles/Typography';
+import { BodyMedium, Headline_02, Subtitle_02 } from '@/component/Typography';
 import Image from 'next/image';
 import React, { forwardRef } from 'react';
 
