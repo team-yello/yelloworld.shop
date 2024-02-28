@@ -1,15 +1,15 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Button, Header } from "@primer/react";
-import Image from "next/image";
-import logo from "../public/app_icon.svg";
-import { Headline_00 } from "@/styles/Typography";
-import { pallete } from "@/styles/Color";
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { NextRouter, useRouter } from "next/router";
-import { APP_STORE_URL, GOOGLE_PLAY_URL } from "@/util/string";
+import { Button, Header } from '@primer/react';
+import Image from 'next/image';
+import logo from '../public/app_icon.svg';
+import { Headline_00 } from '@/component/Typography';
+import { pallete } from '@/styles/Color';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { NextRouter, useRouter } from 'next/router';
+import { APP_STORE_URL, GOOGLE_PLAY_URL } from '@/util/string';
 
 const SERVER_URI = process.env.NEXT_PUBLIC_SERVER_URL;
 const REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
@@ -21,7 +21,7 @@ const TopBar = ({ router }: { router: NextRouter }) => {
 
   const login = () => {
     if (isKakaoLogin) {
-      localStorage.removeItem("accessToken");
+      localStorage.removeItem('accessToken');
       setIsKakaoLogin(false);
     } else {
       window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
@@ -29,18 +29,18 @@ const TopBar = ({ router }: { router: NextRouter }) => {
   };
 
   const passwordLogin = () => {
-    if (localStorage.getItem("accessToken")) {
-      localStorage.removeItem("accessToken");
+    if (localStorage.getItem('accessToken')) {
+      localStorage.removeItem('accessToken');
       setIsLogin(false);
       router.push(REDIRECT_URI!);
     } else {
       axios
         .post(`${SERVER_URI}/api/v1/admin/login`, {
-          password: prompt("비밀 번호를 입력하세요."),
+          password: prompt('비밀 번호를 입력하세요.'),
         })
         .then((res) => {
-          alert("로그인에 성공하였습니다!");
-          localStorage.setItem("accessToken", res.data.data.accessToken);
+          alert('로그인에 성공하였습니다!');
+          localStorage.setItem('accessToken', res.data.data.accessToken);
           setIsLogin(true);
         })
         .catch((reason) => alert(reason.response.data.message));
@@ -49,7 +49,7 @@ const TopBar = ({ router }: { router: NextRouter }) => {
 
   useEffect(() => {
     const { code } = router.query;
-    if (localStorage.getItem("accessToken")) {
+    if (localStorage.getItem('accessToken')) {
       // setIsKakaoLogin(true);
       setIsLogin(true);
     }
@@ -58,13 +58,13 @@ const TopBar = ({ router }: { router: NextRouter }) => {
       const postLogin = async (accessToken: string) => {
         axios
           .post(`${SERVER_URI}/api/v1/auth/oauth`, {
-            social: "KAKAO",
+            social: 'KAKAO',
             accessToken: accessToken,
           })
           .then((res) => res.data)
           .then((data) => {
-            alert("로그인에 성공하였습니다!");
-            localStorage.setItem("accessToken", data.accessToken);
+            alert('로그인에 성공하였습니다!');
+            localStorage.setItem('accessToken', data.accessToken);
             setIsKakaoLogin(true);
           })
           .catch((reason) => alert(reason.response.data.message));
@@ -72,17 +72,17 @@ const TopBar = ({ router }: { router: NextRouter }) => {
       const postAuthCode = async () => {
         axios
           .post(
-            "https://kauth.kakao.com/oauth/token",
+            'https://kauth.kakao.com/oauth/token',
             {
-              grant_type: "authorization_code",
+              grant_type: 'authorization_code',
               client_id: KAKAO_KEY,
               redirect_uri: REDIRECT_URI,
               code: code,
             },
             {
               headers: {
-                "Content-Type":
-                  "application/x-www-form-urlencoded;charset=utf-8",
+                'Content-Type':
+                  'application/x-www-form-urlencoded;charset=utf-8',
               },
             },
           )
@@ -98,15 +98,15 @@ const TopBar = ({ router }: { router: NextRouter }) => {
 
   return (
     <>
-      <Header sx={{ backgroundColor: pallete.yello_sub_400 }}>
+      <Header sx={{ backgroundColor: pallete['yello-sub-400'] }}>
         <Header.Item>
-          <Link href="/">
-            <Image alt="logo" src={logo} width={48} height={48} />
-            <Headline_00>{"Yello 어드민"}</Headline_00>
+          <Link href='/admin'>
+            <Image alt='logo' src={logo} width={48} height={48} />
+            <Headline_00>{'Yello 어드민'}</Headline_00>
           </Link>
         </Header.Item>
         <Header.Item>
-          <Link href={GOOGLE_PLAY_URL}>{"Play Store"}</Link>
+          <Link href={GOOGLE_PLAY_URL}>{'Play Store'}</Link>
         </Header.Item>
         <Header.Item>
           <Link href={APP_STORE_URL}>App Store</Link>
@@ -115,8 +115,8 @@ const TopBar = ({ router }: { router: NextRouter }) => {
           {/* <Button variant="outline" onClick={() => login()}>
             {isKakaoLogin ? "카카오 로그아웃" : "카카오 로그인"}
           </Button> */}
-          <Button variant="outline" onClick={() => passwordLogin()}>
-            {isLogin ? "비밀번호 로그아웃" : "비밀번호 로그인"}
+          <Button variant='outline' onClick={() => passwordLogin()}>
+            {isLogin ? '비밀번호 로그아웃' : '비밀번호 로그인'}
           </Button>
         </Header.Item>
       </Header>

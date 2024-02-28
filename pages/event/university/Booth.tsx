@@ -2,9 +2,9 @@ import {
   APP_STORE_URL,
   GOOGLE_PLAY_URL,
   LANDING_PAGE_URL,
-} from "@/util/string";
-import React, { useEffect } from "react";
-import { isAndroid, isIOS } from "react-device-detect";
+} from '@/util/string';
+import React, { useEffect } from 'react';
+import { isAndroid, isIOS } from 'react-device-detect';
 
 const Booth = () => {
   useEffect(() => {
@@ -19,7 +19,7 @@ const Booth = () => {
 
   return (
     <>
-      <div>{"redirecting..."}</div>
+      <div>{'redirecting...'}</div>
     </>
   );
 };
