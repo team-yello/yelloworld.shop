@@ -4,7 +4,7 @@ import { Property } from 'csstype';
 export interface ButtonProps {
   type?: 'submit' | 'reset' | 'button' | undefined;
   className?: string;
-  size: 'XS' | 'S' | 'L';
+  size: 'None' | 'XS' | 'S' | 'L' | 'XL';
   disabled?: boolean;
   radius?: boolean;
   backgroundColor: Property.BackgroundColor;
