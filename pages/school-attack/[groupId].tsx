@@ -1,8 +1,8 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useCallback, useRef, useState } from 'react';
 import Image from 'next/image';
 import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
-import { TextInput } from '@primer/react';
+import { Dialog, TextInput } from '@primer/react';
 
 import {
   BodyMedium,
@@ -30,6 +30,7 @@ import ranking_2_svg from '@/component/Icon/asset/ranking-2.svg';
 import ranking_3_svg from '@/component/Icon/asset/ranking-3.svg';
 import ranking_up_svg from '@/component/Icon/asset/ranking-up.svg';
 import ranking_down_svg from '@/component/Icon/asset/ranking-down.svg';
+import share_svg from '@/component/Icon/asset/share.svg';
 
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { QUERY_KEY } from '@/util/string';
@@ -38,6 +39,8 @@ import {
   getSchoolAttackStatisticsDetail,
   getSchoolAttackStatisticsLikeGroupName,
 } from '@/repository/statistics';
+import Script from 'next/script';
+import Link from 'next/link';
 
 const maxWidth = 425;
 
@@ -77,10 +80,58 @@ export default function SchoolAttack() {
   const firstRankingGroup =
     statisticsQuery.data?.pages[0].data.data.statisticsList[0];
 
+  const observer = useRef<IntersectionObserver>();
+  const lastItemRef = useCallback(
+    (node: HTMLDivElement) => {
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          searchQuery.hasNextPage && searchQuery.fetchNextPage();
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    [searchQuery],
+  );
+
   return (
     <>
+      <Script
+        async
+        src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8374722078438476'
+      ></Script>
       <SystemLayout>
         <MainLayout maxWidth={maxWidth}>
+          <div
+            className='sticky z-10 flex flex-row w-full h-20'
+            style={{
+              maxWidth: maxWidth,
+              top: 'calc(100vh - 5rem)',
+              background:
+                'linear-gradient(180deg, rgba(25, 25, 25, 0) 0%, #191919 100%)',
+            }}
+          >
+            <Button
+              className='flex flex-row w-2/6 h-14 mr-2 rounded-3xl justify-center items-center text-white'
+              size='None'
+              backgroundColor={pallete['grayscales-700']}
+              onClick={async () => {
+                await navigator.clipboard.writeText(window.location.href);
+                alert('링크가 복사되었습니다!');
+              }}
+            >
+              <Image className='mr-2' src={share_svg} alt='share' />
+              {'공유'}
+            </Button>
+            <Button
+              className='w-4/6 h-14 rounded-3xl'
+              size='None'
+              backgroundColor={pallete['yello-main-500']}
+              onClick={() => router.push('/event/university/Booth')}
+            >
+              {'나도 대항전 참여하기'}
+            </Button>
+          </div>
           <section className='px-5'>
             <div
               css={css`
@@ -270,29 +321,33 @@ export default function SchoolAttack() {
               }
             />
             {searchKey && (
-              <div className='flex flex-col gap-2 w-full h-60 my-2 overflow-y-scroll'>
+              <div className='gap-2 w-full h-60 my-2 overflow-y-scroll'>
                 {searchQuery.data?.pages.map((page, index) => (
                   <Fragment key={index}>
                     {page.data.data.statisticsList.map((statistics, index) => {
                       return (
-                        <ListItem
-                          key={index}
-                          groupName={statistics.userGroupName}
-                          rank={statistics.rankNumber}
-                          diffRank={
-                            statistics.prevRankNumber - statistics.rankNumber
-                          }
-                          title={statistics.userGroupName}
-                          score={statistics.score}
-                        />
+                        <>
+                          <ListItem
+                            key={index}
+                            groupName={statistics.userGroupName}
+                            rank={statistics.rankNumber}
+                            diffRank={
+                              statistics.prevRankNumber - statistics.rankNumber
+                            }
+                            title={statistics.userGroupName}
+                            score={statistics.score}
+                          />
+                          <Spacing size={10} />
+                        </>
                       );
                     })}
                   </Fragment>
                 ))}
+                <div ref={lastItemRef} />
               </div>
             )}
           </section>
-          <section className='px-5 flex flex-col items-center my-3 mb-10'>
+          <section className='px-5 flex flex-col items-center my-3 mb-28'>
             <Subtitle_01 className='text-white'>
               {'전국 중/고등학교 TOP 10'}
             </Subtitle_01>
@@ -372,7 +427,7 @@ const ListItem = ({
             <Subtitle_02 className='text-yello-sub-500 font-bold'>
               {rank}
             </Subtitle_02>
-            {diffRank && (
+            {diffRank && diffRank > 0 && (
               <div className='flex'>
                 <Image
                   src={diffRank > 0 ? ranking_up_svg : ranking_down_svg}

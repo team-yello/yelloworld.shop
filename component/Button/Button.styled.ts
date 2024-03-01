@@ -4,6 +4,8 @@ import { ButtonProps } from './Button.types';
 
 const getSize = ({ size }: Pick<ButtonProps, 'size'>) => {
   switch (size) {
+    case 'None':
+      return '';
     case 'XS':
       return css`
         width: 72px;
@@ -18,6 +20,11 @@ const getSize = ({ size }: Pick<ButtonProps, 'size'>) => {
       return css`
         width: 320px;
         height: 54px;
+      `;
+    case 'XL':
+      return css`
+        width: 100%;
+        height: 100%;
       `;
   }
 };
