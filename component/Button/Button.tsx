@@ -6,7 +6,7 @@ import { ButtonWrapper } from './Button.styled';
 import { SerializedStyles, css } from '@emotion/react';
 
 // eslint-disable-next-line react/display-name
-export const Button = forwardRef(
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
       type = 'button',
