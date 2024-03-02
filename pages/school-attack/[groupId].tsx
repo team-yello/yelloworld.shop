@@ -43,53 +43,62 @@ import ranking_up_svg from '@/component/Icon/asset/ranking-up.svg';
 import ranking_down_svg from '@/component/Icon/asset/ranking-down.svg';
 import share_svg from '@/component/Icon/asset/share.svg';
 
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import {
+  QueryClient,
+  dehydrate,
+  useInfiniteQuery,
+  useQuery,
+} from '@tanstack/react-query';
 import { QUERY_KEY } from '@/util/string';
 import {
   getSchoolAttackStatistics,
   getSchoolAttackStatisticsDetail,
   getSchoolAttackStatisticsLikeGroupName,
 } from '@/repository/statistics';
-import Script from 'next/script';
-import Link from 'next/link';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 
 const maxWidth = 425;
 
-export default function SchoolAttack() {
+export default function SchoolAttack({}: InferGetServerSidePropsType<
+  typeof getServerSideProps
+>) {
   const router = useRouter();
   const { groupId } = router.query;
 
   const [searchKey, setSearchKey] = useState<string>('');
   const statisticsQuery = useInfiniteQuery({
     queryKey: [QUERY_KEY.SCHOOL_ATTACK_STATISTICS],
-    queryFn: async ({ pageParam }) => getSchoolAttackStatistics(pageParam),
+    queryFn: async ({ pageParam }) =>
+      (await getSchoolAttackStatistics(pageParam)).data,
     initialPageParam: 0,
     getNextPageParam: (lastPage, pages, lastPageParam) => {
-      if (lastPage.data.data.statisticsList.length === 0) return undefined;
+      if (lastPage.data.statisticsList.length === 0) return undefined;
       return lastPageParam + 1;
     },
   });
   const statisticsDetailQuery = useQuery({
     queryKey: [QUERY_KEY.SCHOOL_ATTACK_STATISTICS_DETAIl, groupId],
     queryFn: async () => {
-      return await getSchoolAttackStatisticsDetail(groupId as string);
+      return (await getSchoolAttackStatisticsDetail(groupId as string)).data;
     },
     enabled: !!groupId,
   });
   const searchQuery = useInfiniteQuery({
     queryKey: [QUERY_KEY.SCHOOL_ATTACK_SEARCH, searchKey],
     queryFn: async ({ pageParam }) => {
-      return await getSchoolAttackStatisticsLikeGroupName(searchKey, pageParam);
+      return (
+        await getSchoolAttackStatisticsLikeGroupName(searchKey, pageParam)
+      ).data;
     },
     initialPageParam: 0,
     getNextPageParam: (lastPage, pages, lastPageParam) => {
-      if (lastPage.data.data.statisticsList.length === 0) return undefined;
+      if (lastPage.data.statisticsList.length === 0) return undefined;
       return lastPageParam + 1;
     },
     enabled: !!searchKey,
   });
   const firstRankingGroup =
-    statisticsQuery.data?.pages[0].data.data.statisticsList[0];
+    statisticsQuery.data?.pages[0].data.statisticsList[0];
 
   const observer = useRef<IntersectionObserver>();
   const lastItemRef = useCallback(
@@ -104,13 +113,6 @@ export default function SchoolAttack() {
     },
     [searchQuery],
   );
-
-  useEffect(() => {
-    if (groupId) {
-      const decoded = decodeURIComponent(groupId as string);
-      router.push(`/school-attack/${decoded}`);
-    }
-  }, [groupId, router]);
 
   return (
     <>
@@ -196,7 +198,7 @@ export default function SchoolAttack() {
               <div className='flex flex-col items-center'>
                 <div className='flex gap-2'>
                   <Headline_01 className='text-white'>{`${
-                    statisticsDetailQuery.data?.data.data.userGroupName || ''
+                    statisticsDetailQuery.data?.data.userGroupName || ''
                   }`}</Headline_01>
                   <Headline_02_Light className='text-white'>
                     {'는'}
@@ -207,7 +209,7 @@ export default function SchoolAttack() {
                     {'현재'}
                   </Headline_02_Light>
                   <Headline_01 className='text-yello-main-500'>
-                    {statisticsDetailQuery.data?.data.data.rankNumber || 0}
+                    {statisticsDetailQuery.data?.data.rankNumber || 0}
                   </Headline_01>
                   <Headline_01 className='text-yello-main-500'>
                     {'위'}
@@ -249,21 +251,17 @@ export default function SchoolAttack() {
               },
             ).format(
               new Date(
-                statisticsQuery.data?.pages.at(0)?.data.data.updatedAt ||
+                statisticsQuery.data?.pages.at(0)?.data.updatedAt ||
                   '2024-01-01',
               ),
             )} 기준`}</LabelMedium>
             <Spacing size={20} />
             {groupId ? (
               <ListItem
-                groupName={
-                  statisticsDetailQuery.data?.data.data.userGroupName || ''
-                }
-                rank={statisticsDetailQuery.data?.data.data.rankNumber || 0}
-                title={
-                  statisticsDetailQuery.data?.data.data.userGroupName || ''
-                }
-                score={statisticsDetailQuery.data?.data.data.score || 0}
+                groupName={statisticsDetailQuery.data?.data.userGroupName || ''}
+                rank={statisticsDetailQuery.data?.data.rankNumber || 0}
+                title={statisticsDetailQuery.data?.data.userGroupName || ''}
+                score={statisticsDetailQuery.data?.data.score || 0}
               />
             ) : (
               <ListItem
@@ -360,7 +358,7 @@ export default function SchoolAttack() {
               <div className='gap-2 w-full h-60 my-2 overflow-y-scroll'>
                 {searchQuery.data?.pages.map((page, index) => (
                   <Fragment key={index}>
-                    {page.data.data.statisticsList.map((statistics, index) => {
+                    {page.data.statisticsList.map((statistics, index) => {
                       return (
                         <>
                           <ListItem
@@ -372,6 +370,11 @@ export default function SchoolAttack() {
                             }
                             title={statistics.userGroupName}
                             score={statistics.score}
+                            onClick={() => {
+                              router.push(
+                                `/school-attack/${statistics.userGroupName}`,
+                              );
+                            }}
                           />
                           <Spacing size={10} />
                         </>
@@ -402,8 +405,8 @@ export default function SchoolAttack() {
             </div>
             <div className='flex flex-col gap-2 w-full mt-2'>
               {statisticsQuery.data?.pages.map((page, index) => (
-                <Fragment key={index + page.data.data.pageCount}>
-                  {page.data.data.statisticsList.map((statistics, index) => {
+                <Fragment key={index + page.data.pageCount}>
+                  {page.data.statisticsList.map((statistics, index) => {
                     return (
                       <>
                         <ListItem
@@ -414,6 +417,11 @@ export default function SchoolAttack() {
                           }
                           title={statistics.userGroupName}
                           score={statistics.score}
+                          onClick={() => {
+                            router.push(
+                              `/school-attack/${statistics.userGroupName}`,
+                            );
+                          }}
                         />
                       </>
                     );
@@ -434,12 +442,14 @@ const ListItem = ({
   diffRank,
   title,
   score,
+  onClick,
 }: {
   groupName: string;
   rank: number;
   diffRank?: number;
   title: string;
   score: number;
+  onClick?: (groupName: string) => void;
 }) => {
   const router = useRouter();
   const getRankingImage = () => {
@@ -452,7 +462,9 @@ const ListItem = ({
       className='flex items-center bg-white h-14 w-full cursor-pointer'
       onClick={(e) => {
         e.preventDefault();
-        router.push(`/school-attack/${groupName}`);
+        if (onClick) {
+          onClick(groupName);
+        }
       }}
     >
       <div className='flex flex-col ml-5'>
@@ -485,3 +497,28 @@ const ListItem = ({
     </div>
   );
 };
+
+export const getServerSideProps = (async (context) => {
+  const queryClient = new QueryClient();
+
+  const { groupId } = context.query;
+  const decoded = decodeURIComponent(groupId as string);
+  await queryClient.prefetchQuery({
+    queryKey: [QUERY_KEY.SCHOOL_ATTACK_STATISTICS_DETAIl, decoded],
+    queryFn: async () => {
+      return (await getSchoolAttackStatisticsDetail(decoded)).data;
+    },
+  });
+  await queryClient.prefetchInfiniteQuery({
+    queryKey: [QUERY_KEY.SCHOOL_ATTACK_STATISTICS],
+    queryFn: async ({ pageParam }) =>
+      (await getSchoolAttackStatistics(pageParam)).data,
+    initialPageParam: 0,
+  });
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
+}) satisfies GetServerSideProps;
