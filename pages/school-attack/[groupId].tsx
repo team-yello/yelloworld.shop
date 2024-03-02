@@ -56,6 +56,7 @@ import {
   getSchoolAttackStatisticsLikeGroupName,
 } from '@/repository/statistics';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { redirect } from 'next/navigation';
 
 const maxWidth = 425;
 
@@ -517,6 +518,10 @@ const getServerSideProps = (async (context) => {
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
+    },
+    redirect: {
+      destination: `/school-attack/${encoded}`,
+      permanent: false,
     },
   };
 }) satisfies GetServerSideProps;
