@@ -500,11 +500,11 @@ const getServerSideProps = (async (context) => {
   const queryClient = new QueryClient();
 
   const { groupId } = context.query;
-  const decoded = decodeURIComponent(groupId as string);
+  const encoded = encodeURIComponent(groupId as string);
   await queryClient.prefetchQuery({
-    queryKey: [QUERY_KEY.SCHOOL_ATTACK_STATISTICS_DETAIl, decoded],
+    queryKey: [QUERY_KEY.SCHOOL_ATTACK_STATISTICS_DETAIl, encoded],
     queryFn: async () => {
-      return (await getSchoolAttackStatisticsDetail(decoded)).data;
+      return (await getSchoolAttackStatisticsDetail(encoded)).data;
     },
   });
   await queryClient.prefetchInfiniteQuery({
