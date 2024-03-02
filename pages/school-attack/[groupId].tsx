@@ -19,9 +19,14 @@ import { Collapse } from '@/component/Collapse';
 import { Button } from '@/component/Button';
 import { pallete } from '@/styles/Color';
 
-import { MainLayout, SystemLayout } from '../../styles/SchoolAttack.styled';
+import {
+  MainLayout,
+  SystemLayout,
+  moveUpDown,
+} from '../../styles/SchoolAttack.styled';
 
 import background_main from '@/public/background_main.svg';
+import main_logo from '@/public/main_logo.svg';
 import message_square_svg from '@/component/Icon/asset/message-square.svg';
 import add_and_share_svg from '@/component/Icon/asset/add-and-share.svg';
 import search_white_svg from '@/component/Icon/asset/search-white.svg';
@@ -96,10 +101,6 @@ export default function SchoolAttack() {
 
   return (
     <>
-      <Script
-        async
-        src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8374722078438476'
-      ></Script>
       <SystemLayout>
         <MainLayout maxWidth={maxWidth}>
           <div
@@ -132,30 +133,52 @@ export default function SchoolAttack() {
               {'나도 대항전 참여하기'}
             </Button>
           </div>
-          <section className='px-5'>
-            <div
-              css={css`
-                position: absolute;
-                top: 0;
-                left: 50%;
-                transform: translateX(-50%);
-                z-index: -1;
-              `}
-            >
-              <Image
-                alt='background_main'
-                src={background_main}
-                quality={100}
-                style={{
-                  position: 'relative',
-                  width: '100vw',
-                  maxWidth: `${maxWidth}px`,
-                  height: '100%',
-                  objectFit: 'contain',
-                }}
-              />
-            </div>
-            <div style={{ height: '70vw', maxHeight: '300px' }} />
+          <div
+            css={css`
+              position: absolute;
+              top: 0;
+              left: 50%;
+              transform: translateX(-50%);
+              z-index: -1;
+            `}
+          >
+            <Image
+              alt='background_main'
+              src={background_main}
+              quality={100}
+              style={{
+                position: 'relative',
+                width: '100vw',
+                maxWidth: `${maxWidth}px`,
+                height: '100%',
+                objectFit: 'contain',
+              }}
+            />
+          </div>
+          <div
+            css={css`
+              position: absolute;
+              top: 100px;
+              left: 19%;
+              transform: translateX(-50%);
+              z-index: -1;
+              animation: ${moveUpDown} 2s ease-in-out infinite;
+            `}
+          >
+            <Image
+              alt='main_logo'
+              src={main_logo}
+              quality={100}
+              style={{
+                position: 'relative',
+                width: '70vw',
+                maxWidth: `${270}px`,
+                height: '100%',
+                objectFit: 'contain',
+              }}
+            />
+          </div>
+          <section className='px-5 mt-64'>
             {groupId ? (
               <div className='flex flex-col items-center'>
                 <div className='flex gap-2'>
@@ -427,7 +450,7 @@ const ListItem = ({
             <Subtitle_02 className='text-yello-sub-500 font-bold'>
               {rank}
             </Subtitle_02>
-            {diffRank && diffRank > 0 && (
+            {diffRank !== undefined && diffRank !== 0 && (
               <div className='flex'>
                 <Image
                   src={diffRank > 0 ? ranking_up_svg : ranking_down_svg}
