@@ -1,4 +1,10 @@
-import React, { Fragment, useCallback, useRef, useState } from 'react';
+import React, {
+  Fragment,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import Image from 'next/image';
 import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
@@ -99,6 +105,13 @@ export default function SchoolAttack() {
     [searchQuery],
   );
 
+  useEffect(() => {
+    if (groupId) {
+      const decoded = decodeURIComponent(groupId as string);
+      router.push(`/school-attack/${decoded}`);
+    }
+  }, [groupId, router]);
+
   return (
     <>
       <SystemLayout>
@@ -159,7 +172,7 @@ export default function SchoolAttack() {
             css={css`
               position: absolute;
               top: 100px;
-              left: 19%;
+              left: 16%;
               transform: translateX(-50%);
               z-index: -1;
               animation: ${moveUpDown} 2s ease-in-out infinite;
