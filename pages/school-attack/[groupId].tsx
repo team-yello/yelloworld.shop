@@ -450,7 +450,7 @@ const ListItem = ({
             <Subtitle_02 className='text-yello-sub-500 font-bold'>
               {rank}
             </Subtitle_02>
-            {diffRank && diffRank !== 0 && (
+            {diffRank !== undefined && diffRank !== 0 && (
               <div className='flex'>
                 <Image
                   src={diffRank > 0 ? ranking_up_svg : ranking_down_svg}
