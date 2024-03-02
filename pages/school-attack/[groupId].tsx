@@ -496,7 +496,7 @@ const ListItem = ({
   );
 };
 
-export const getServerSideProps = (async (context) => {
+const getServerSideProps = (async (context) => {
   const queryClient = new QueryClient();
 
   const { groupId } = context.query;
