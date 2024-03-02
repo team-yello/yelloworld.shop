@@ -59,9 +59,7 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 
 const maxWidth = 425;
 
-export default function SchoolAttack({}: InferGetServerSidePropsType<
-  typeof getServerSideProps
->) {
+export default function SchoolAttack() {
   const router = useRouter();
   const { groupId } = router.query;
 
