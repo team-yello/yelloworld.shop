@@ -15,9 +15,9 @@ export default async function Image({
   params: { groupId: string | undefined };
 }) {
   // https://nextjs.org/docs/app/building-your-application/optimizing/metadata#dynamic-image-generation
-  const pretendardExtraBold = fetch(
-    new URL('../../public/Pretendard-ExtraBold.edited.woff', import.meta.url),
-  ).then((res) => res.arrayBuffer());
+  // const pretendardExtraBold = fetch(
+  //   new URL('../../public/Pretendard-ExtraBold.edited.woff', import.meta.url),
+  // ).then((res) => res.arrayBuffer());
   const backgroundImage = await fetch(
     new URL('../../public/og_background.png', import.meta.url),
   ).then((res) => res.arrayBuffer());
@@ -53,14 +53,14 @@ export default async function Image({
     ),
     {
       ...size,
-      fonts: [
-        {
-          name: 'Pretendard',
-          data: await pretendardExtraBold,
-          style: 'normal',
-          weight: 800,
-        },
-      ],
+      // fonts: [
+      //   {
+      //     name: 'Pretendard',
+      //     data: await pretendardExtraBold,
+      //     style: 'normal',
+      //     weight: 800,
+      //   },
+      // ],
     },
   );
 }
