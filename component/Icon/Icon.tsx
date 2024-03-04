@@ -1,5 +1,6 @@
+'use client';
+
 import React from 'react';
-import { SerializedStyles } from '@emotion/react';
 import parse, { Element, HTMLReactParserOptions } from 'html-react-parser';
 
 import { IconWrapper } from './Icon.styled';
@@ -21,7 +22,7 @@ export const Icon = ({
   style,
 }: IconProps) => {
   return (
-    <IconWrapper className={className} css={style as SerializedStyles}>
+    <IconWrapper className={className} style={style}>
       {type === 'svg' ? (
         <Svg color={color} width={width} height={height} src={src} />
       ) : (

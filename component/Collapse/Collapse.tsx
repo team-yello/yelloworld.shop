@@ -1,5 +1,6 @@
+'use client';
+
 import React, { useRef, useState } from 'react';
-import { SerializedStyles, css } from '@emotion/react';
 import Image from 'next/image';
 
 import { Button } from '../Button';
@@ -28,11 +29,11 @@ export const Collapse = ({
         radius={false}
         backgroundColor='--white'
         onClick={handleClick}
-        style={css`
-          border: 0;
-          width: unset;
-          ${style as SerializedStyles}
-        `}
+        style={{
+          border: '0',
+          width: 'unset',
+          ...style,
+        }}
       >
         <div className='ml-3'>{title}</div>
         <Image className='mr-3' src={chevronDown} alt='chevron_down' />

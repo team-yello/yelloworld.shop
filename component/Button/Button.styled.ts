@@ -1,5 +1,5 @@
-import styled from '@emotion/styled';
-import { css } from '@emotion/react';
+import styled from 'styled-components';
+import { css } from 'styled-components';
 import { ButtonProps } from './Button.types';
 
 const getSize = ({ size }: Pick<ButtonProps, 'size'>) => {
