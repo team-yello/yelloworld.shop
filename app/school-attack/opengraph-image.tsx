@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
