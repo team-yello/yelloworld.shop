@@ -19,11 +19,7 @@ import { Button } from '../Button';
 
 export const TopBar = () => {
   const router = useRouter();
-  const [isLogin, setIsLogin] = useState<boolean>(
-    typeof window !== 'undefined'
-      ? localStorage.getItem('accessToken') !== undefined
-      : false,
-  );
+  const [isLogin, setIsLogin] = useState<boolean>(false);
 
   // const [isKakaoLogin, setIsKakaoLogin] = useState<boolean>(false);
   // const login = () => {
@@ -53,6 +49,13 @@ export const TopBar = () => {
         .catch((reason) => alert(reason.response.data.message));
     }
   };
+
+  // https://nextjs.org/docs/messages/react-hydration-error#solution-1-using-useeffect-to-run-on-the-client-only
+  useEffect(() => {
+    if (localStorage.getItem('accessToken') !== undefined) {
+      setIsLogin(true);
+    }
+  }, []);
 
   // useEffect(() => {
   //   const { code } = router.query;
@@ -139,7 +142,11 @@ export const TopBar = () => {
           {/* <Button variant="outline" onClick={() => login()}>
             {isKakaoLogin ? "카카오 로그아웃" : "카카오 로그인"}
           </Button> */}
-          <PrimerButton variant='default' onClick={() => passwordLogin()}>
+          <PrimerButton
+            variant='default'
+            onClick={() => passwordLogin()}
+            suppressHydrationWarning
+          >
             {isLogin ? '비밀번호 로그아웃' : '비밀번호 로그인'}
           </PrimerButton>
         </Header.Item>
