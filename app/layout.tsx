@@ -24,6 +24,7 @@ export default function RootLayout({
     <html lang='ko' suppressHydrationWarning>
       <head>
         <Script
+          async
           strategy='beforeInteractive'
           crossOrigin='anonymous'
           src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8374722078438476'
