@@ -1,5 +1,4 @@
 import { Property } from 'csstype';
-import { SerializedStyles } from '@emotion/react';
 
 export interface IconProps {
   className?: string;
@@ -9,7 +8,7 @@ export interface IconProps {
   width?: number | string;
   height?: number | string;
   color?: Property.BackgroundColor;
-  style?: SerializedStyles | React.CSSProperties;
+  style?: React.CSSProperties;
 }
 
 export interface SvgProps {

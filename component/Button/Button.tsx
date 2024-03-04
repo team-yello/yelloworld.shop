@@ -1,9 +1,10 @@
+'use client';
+
 import React, { forwardRef } from 'react';
 import classNames from 'classnames';
 
 import { ButtonProps } from './Button.types';
 import { ButtonWrapper } from './Button.styled';
-import { SerializedStyles, css } from '@emotion/react';
 
 // eslint-disable-next-line react/display-name
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -35,7 +36,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             }
           }}
           backgroundColor={backgroundColor}
-          css={style as SerializedStyles}
+          style={style}
           ref={ref}
         >
           {children}

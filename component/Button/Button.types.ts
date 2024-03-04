@@ -1,4 +1,3 @@
-import { SerializedStyles } from '@emotion/react';
 import { Property } from 'csstype';
 
 export interface ButtonProps {
@@ -9,7 +8,7 @@ export interface ButtonProps {
   radius?: boolean;
   backgroundColor: Property.BackgroundColor;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
-  style?: SerializedStyles | React.CSSProperties;
+  style?: React.CSSProperties;
   children?: React.ReactNode;
   isSubmit?: boolean;
 }
