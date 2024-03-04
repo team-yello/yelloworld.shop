@@ -20,7 +20,9 @@ import { Button } from '../Button';
 export const TopBar = () => {
   const router = useRouter();
   const [isLogin, setIsLogin] = useState<boolean>(
-    localStorage && localStorage.getItem('accessToken') !== undefined,
+    typeof window !== 'undefined'
+      ? localStorage.getItem('accessToken') !== undefined
+      : false,
   );
 
   // const [isKakaoLogin, setIsKakaoLogin] = useState<boolean>(false);
