@@ -1,7 +1,7 @@
 'use client';
 
-import { Menu, TopBar } from '@/component';
 import React from 'react';
+import { Menu, TopBar } from '@/component';
 
 export default function AdminLayout({
   children,
