@@ -15,7 +15,7 @@ export default async function Image({
 }) {
   // https://nextjs.org/docs/app/building-your-application/optimizing/metadata#dynamic-image-generation
   const pretendardExtraBold = fetch(
-    new URL('../../public/Pretendard-ExtraBold.subset.woff', import.meta.url),
+    new URL('../../public/Pretendard-ExtraBold.edited.woff', import.meta.url),
   ).then((res) => res.arrayBuffer());
   const backgroundImage = await fetch(
     new URL('../../public/og_background.png', import.meta.url),
