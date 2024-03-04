@@ -5,10 +5,8 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import '@/styles/globals.css';
-import {
-  ReactQueryClientProvider,
-  StyledComponentsRegistry,
-} from '@/component/Provider';
+import { StyledComponentsRegistry } from '@/component/Provider/StyledComponentsRegistry';
+import { ReactQueryClientProvider } from '@/component/Provider/ReactQueryClientProvider';
 
 export const metadata: Metadata = {
   title: 'YELL:O - 너의 [ ??? ]에 설렜어',
