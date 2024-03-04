@@ -1,6 +1,7 @@
 {
   "root": true,
   "extends": [
+    "plugin:jsx-a11y/recommended",
     "next/core-web-vitals",
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
@@ -17,15 +18,16 @@
   "parserOptions": {
     "project": ["./tsconfig.json"]
   },
-  "plugins": ["react-refresh", "@typescript-eslint", "@emotion"],
+  "plugins": ["jsx-a11y", "react-refresh", "@typescript-eslint"],
   "rules": {
     "@typescript-eslint/no-unused-vars": "off",
-    "react/no-unknown-property": ["error", { "ignore": ["css"] }],
     "react-refresh/only-export-components": [
       "warn",
       { "allowConstantExport": true }
     ],
-    "@typescript-eslint/no-namespace": "off"
+    "@typescript-eslint/no-namespace": "off",
+    "jsx-a11y/click-events-have-key-events": "off",
+    "jsx-a11y/no-static-element-interactions": "off"
   },
   "ignorePatterns": ["dist/**/*", ".eslintrc.json"]
 }

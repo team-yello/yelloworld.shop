@@ -4,14 +4,16 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.resolve.fallback = {
-        fs: false,
-      };
-    }
-
-    return config;
+  logging: {
+    fetches: {
+      fullUrl: false,
+    },
+  },
+  compiler: {
+    styledComponents: true,
+  },
+  experimental: {
+    swcTraceProfiling: true,
   },
 };
 
