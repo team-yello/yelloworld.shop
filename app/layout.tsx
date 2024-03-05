@@ -23,12 +23,11 @@ export default function RootLayout({
   return (
     <html lang='ko' suppressHydrationWarning>
       <head>
-        <Script
+        <script
           async
-          strategy='beforeInteractive'
           crossOrigin='anonymous'
           src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8374722078438476'
-        ></Script>
+        ></script>
       </head>
       <body>
         <Analytics />
