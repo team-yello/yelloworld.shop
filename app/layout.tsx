@@ -7,14 +7,12 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import '@/styles/globals.css';
 import { StyledComponentsRegistry } from '@/component/Provider/StyledComponentsRegistry';
 import { ReactQueryClientProvider } from '@/component/Provider/ReactQueryClientProvider';
+import Script from 'next/script';
 
 export const metadata: Metadata = {
   title: 'YELL:O - 너의 [ ??? ]에 설렜어',
   description:
     'YELLO (옐로)는 특정 그룹 및 대학교에 소속된 친구들과 함께 즐길 수 있는 익명기반 투표 서비스 입니다.',
-  other: {
-    'google-adsense-account': 'ca-pub-8374722078438476',
-  },
 };
 
 export default function RootLayout({
