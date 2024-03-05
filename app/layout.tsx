@@ -22,13 +22,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang='ko' suppressHydrationWarning>
-      <head>
-        <script
-          async
-          crossOrigin='anonymous'
-          src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8374722078438476'
-        ></script>
-      </head>
       <body>
         <Analytics />
         <SpeedInsights />
