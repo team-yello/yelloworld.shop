@@ -19,7 +19,7 @@ export default async function Image({
   //   new URL('../../public/Pretendard-ExtraBold.edited.woff', import.meta.url),
   // ).then((res) => res.arrayBuffer());
   const backgroundImage = await fetch(
-    new URL('../../public/og_background.png', import.meta.url),
+    new URL('../../public/og_background_2.png', import.meta.url),
   ).then((res) => res.arrayBuffer());
 
   return new ImageResponse(
@@ -42,13 +42,6 @@ export default async function Image({
           src={backgroundImage as unknown as string}
           style={{ position: 'absolute' }}
         />
-        <div
-          style={{ marginTop: '240px', color: 'white', textAlign: 'center' }}
-        >
-          {params.groupId === undefined
-            ? '학교대항전에 참여해보세요!'
-            : decodeURIComponent(params.groupId)}
-        </div>
       </div>
     ),
     {

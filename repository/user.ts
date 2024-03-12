@@ -1,6 +1,14 @@
 import { BASE_URL } from '@/util/string';
 import axios from 'axios';
-import { BaseError, BaseResponse, UserDetail, UserResponse } from './schema';
+import {
+  BaseError,
+  BaseResponse,
+  UserDetail,
+  UserPostCommentRequest,
+  UserPostCommentResponse,
+  UserResponse,
+} from './schema';
+import { request } from 'http';
 
 // eslint-disable-next-line
 export const userFetcher = async ({ queryKey }: { queryKey: any }) => {
@@ -63,5 +71,32 @@ export const deleteUser = async (userId: number) => {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },
     },
+  );
+};
+
+export const getUserPostComment = async (page: number) => {
+  return await axios.get<BaseResponse<UserPostCommentResponse>>(
+    `${BASE_URL}/api/v1/user/post/comment`,
+    {
+      params: {
+        // 고정...
+        postId: 1,
+        page,
+        sort: 'createdAt,desc',
+        size: 20,
+      },
+      headers: {
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+        Expires: '0',
+      },
+    },
+  );
+};
+
+export const postUserPostComment = async (request: UserPostCommentRequest) => {
+  return await axios.post<BaseResponse<undefined>>(
+    `${BASE_URL}/api/v1/user/post/comment`,
+    { ...request, postId: 1, status: 'ACTIVE' },
   );
 };
