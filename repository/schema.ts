@@ -65,6 +65,37 @@ export interface UserDetail {
   subscribe: string;
 }
 
+export interface UserPostComment {
+  id: number;
+  userPostId?: number | null;
+  userId?: number | null;
+  status: 'ACTIVE' | 'INACTIVE';
+  userName?: string | null;
+  yelloId?: string | null;
+  title?: string | null;
+  subtitle?: string | null;
+  content?: string | null;
+  createdAt?: string | null;
+  updatedAt?: string | null;
+}
+
+export interface UserPostCommentResponse {
+  pageCount?: number | null;
+  totalCount?: number | null;
+  postCommentList?: UserPostComment[] | null;
+}
+
+export interface UserPostCommentRequest {
+  id?: number | null;
+  postId?: number | null;
+  userName?: string | null;
+  yelloId?: string | null;
+  status: 'ACTIVE' | 'INACTIVE';
+  title?: string | null;
+  subtitle?: string | null;
+  content?: string | null;
+}
+
 // Cooldown
 export interface Cooldown {
   id: number;

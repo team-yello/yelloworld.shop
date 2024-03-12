@@ -10,7 +10,7 @@ import React, {
 import Image from 'next/image';
 import { css } from 'styled-components';
 import { useRouter } from 'next/navigation';
-import { Dialog, TextInput } from '@primer/react';
+import { Dialog, Pagination, Spinner, TextInput } from '@primer/react';
 
 import {
   BodyMedium,
@@ -49,16 +49,22 @@ import share_svg from '@/component/Icon/asset/share.svg';
 import {
   QueryClient,
   dehydrate,
+  keepPreviousData,
+  queryOptions,
   useInfiniteQuery,
+  useMutation,
   useQuery,
+  useQueryClient,
 } from '@tanstack/react-query';
-import { QUERY_KEY } from '@/util/string';
+import { MUTATION_KEY, QUERY_KEY } from '@/util/string';
 import {
   getSchoolAttackStatistics,
   getSchoolAttackStatisticsDetail,
   getSchoolAttackStatisticsLikeGroupName,
 } from '@/repository/statistics';
 import { redirect, useParams } from 'next/navigation';
+import { UserPostCommentRequest } from '@/repository/schema';
+import { getUserPostComment, postUserPostComment } from '@/repository/user';
 
 const maxWidth = 425;
 
@@ -66,7 +72,34 @@ export default function Page() {
   const router = useRouter();
   const { groupId } = useParams();
 
+  const queryClient = useQueryClient();
   const [searchKey, setSearchKey] = useState<string>('');
+  const [commentPage, setCommentPage] = useState<number>(0);
+  const [commentRequest, setCommentRequest] = useState<
+    Pick<UserPostCommentRequest, 'userName' | 'content'>
+  >({
+    userName: '',
+    content: '',
+  });
+  const commentQuery = useQuery({
+    queryKey: [QUERY_KEY.SCHOOL_ATTACK_COMMENT, commentPage],
+    queryFn: async () => (await getUserPostComment(commentPage)).data,
+    refetchOnMount: true,
+  });
+  const commentMutation = useMutation({
+    mutationKey: [MUTATION_KEY.SCHOOL_ATTACK_COMMENT],
+    mutationFn: postUserPostComment,
+    onSuccess: (data, variables, context) => {
+      queryClient.refetchQueries({
+        queryKey: [QUERY_KEY.SCHOOL_ATTACK_COMMENT],
+      });
+      alert('댓글이 작성되었습니다!');
+      setCommentRequest({
+        userName: '',
+        content: '',
+      });
+    },
+  });
   const statisticsQuery = useInfiniteQuery({
     queryKey: [QUERY_KEY.SCHOOL_ATTACK_STATISTICS],
     queryFn: async ({ pageParam }) =>
@@ -114,6 +147,12 @@ export default function Page() {
     },
     [searchQuery],
   );
+
+  const handleCommentSubmit = () => {
+    if (confirm('댓글을 작성하시겠습니까?')) {
+      commentMutation.mutate(commentRequest as UserPostCommentRequest);
+    }
+  };
 
   return (
     <>
@@ -386,7 +425,7 @@ export default function Page() {
               </div>
             )}
           </section>
-          <section className='px-5 flex flex-col items-center my-3 mb-28'>
+          <section className='px-5 flex flex-col items-center my-3'>
             <Subtitle_01 className='text-white'>
               {'전국 중/고등학교 TOP 10'}
             </Subtitle_01>
@@ -429,6 +468,109 @@ export default function Page() {
                 </Fragment>
               ))}
             </div>
+          </section>
+          <section className='px-5 flex flex-col items-center my-3'>
+            <div className='flex justify-between w-full'>
+              <TextInput
+                className='w-40'
+                sx={{
+                  backgroundColor: pallete.black,
+                  color: pallete.white,
+                  border: 0,
+                }}
+                aria-label='userName'
+                name='userName'
+                placeholder='닉네임을 입력해주세요'
+                autoComplete='userName'
+                size='large'
+                value={commentRequest.userName!}
+                onChange={(e) => {
+                  setCommentRequest({
+                    ...commentRequest,
+                    userName: e.target.value,
+                  });
+                }}
+              />
+              <Button
+                size='None'
+                backgroundColor={pallete['yello-main-500']}
+                className='w-16'
+                onClick={handleCommentSubmit}
+              >
+                {'등록'}
+              </Button>
+            </div>
+            <TextInput
+              className='w-full mt-3'
+              sx={{
+                height: '96px',
+                backgroundColor: pallete.black,
+                color: pallete.white,
+                border: 0,
+              }}
+              aria-label='content'
+              name='content'
+              placeholder='비하 및 욕설은 자제해주세요! (최대 70자)'
+              autoComplete='content'
+              size='large'
+              value={commentRequest.content!}
+              onChange={(e) => {
+                setCommentRequest({
+                  ...commentRequest,
+                  content: e.target.value,
+                });
+              }}
+            />
+          </section>
+          <section className='px-5 flex flex-col items-center my-3 mb-28'>
+            {commentQuery.isFetching ? (
+              <Spinner />
+            ) : (
+              <>
+                {commentQuery.data?.data.postCommentList?.map(
+                  (comment, index) => {
+                    return (
+                      <div
+                        className='w-full p-3 bg-graysacles-900 mb-2'
+                        key={index + 20}
+                      >
+                        <div className='flex justify-between mb-2'>
+                          <BodySmall className='text-gray-600'>
+                            {comment.userName}
+                          </BodySmall>
+                          <LabelSmall className='text-gray-600'>
+                            {new Intl.DateTimeFormat('ko-KR', {
+                              year: 'numeric',
+                              month: 'numeric',
+                              day: 'numeric',
+                              hour: 'numeric',
+                              minute: 'numeric',
+                              second: 'numeric',
+                            }).format(
+                              new Date(comment.createdAt || '2024-01-01'),
+                            )}
+                          </LabelSmall>
+                        </div>
+                        <BodySmall className='text-gray-100'>
+                          {comment.content}
+                        </BodySmall>
+                      </div>
+                    );
+                  },
+                )}
+                <Pagination
+                  pageCount={commentQuery.data?.data.pageCount!}
+                  currentPage={commentPage + 1}
+                  onPageChange={(e, n) => {
+                    let next = n - 1;
+
+                    if (next < 0 || next > commentQuery.data?.data.totalCount!)
+                      return;
+                    setCommentPage(next);
+                  }}
+                />
+              </>
+            )}
           </section>
         </MainLayout>
       </SystemLayout>
