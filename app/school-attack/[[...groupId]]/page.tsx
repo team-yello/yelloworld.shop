@@ -559,12 +559,15 @@ export default function Page() {
                   },
                 )}
                 <Pagination
-                  pageCount={commentQuery.data?.data.pageCount!}
+                  pageCount={commentQuery.data?.data.pageCount as number}
                   currentPage={commentPage + 1}
                   onPageChange={(e, n) => {
                     let next = n - 1;
 
-                    if (next < 0 || next > commentQuery.data?.data.totalCount!)
+                    if (
+                      next < 0 ||
+                      next > (commentQuery.data?.data.totalCount as number)
+                    )
                       return;
                     setCommentPage(next);
                   }}
