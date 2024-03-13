@@ -10,7 +10,14 @@ import React, {
 import Image from 'next/image';
 import { css } from 'styled-components';
 import { useRouter } from 'next/navigation';
-import { Dialog, Pagination, Spinner, TextInput } from '@primer/react';
+import {
+  Dialog,
+  Pagination,
+  Spinner,
+  TextInput,
+  Textarea,
+  ThemeProvider,
+} from '@primer/react';
 
 import {
   BodyMedium,
@@ -149,13 +156,26 @@ export default function Page() {
   );
 
   const handleCommentSubmit = () => {
+    if (!commentRequest.userName) {
+      alert('닉네임을 입력해주세요.');
+      return;
+    }
+    if (!commentRequest.content) {
+      alert('댓글 내용을 입력해주세요.');
+      return;
+    }
+    if (commentRequest.content.length > 70) {
+      alert('댓글이 70자가 넘습니다.');
+      return;
+    }
+
     if (confirm('댓글을 작성하시겠습니까?')) {
       commentMutation.mutate(commentRequest as UserPostCommentRequest);
     }
   };
 
   return (
-    <>
+    <ThemeProvider colorMode='dark' preventSSRMismatch>
       <SystemLayout>
         <MainLayout maxWidth={maxWidth}>
           <div
@@ -278,22 +298,23 @@ export default function Page() {
               </div>
             )}
             <Spacing size={12} />
-            <LabelMedium className='text-center text-grayscales-600'>{`${new Intl.DateTimeFormat(
-              'ko-KR',
-              {
-                year: 'numeric',
-                month: 'numeric',
-                day: 'numeric',
-                hour: 'numeric',
-                minute: 'numeric',
-                second: 'numeric',
-              },
-            ).format(
-              new Date(
-                statisticsQuery.data?.pages.at(0)?.data.updatedAt ||
-                  '2024-01-01',
-              ),
-            )} 기준`}</LabelMedium>
+            <LabelMedium className='text-center text-grayscales-600'>
+              {statisticsQuery.isFetching
+                ? ''
+                : `${new Intl.DateTimeFormat('ko-KR', {
+                    year: 'numeric',
+                    month: 'numeric',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    second: 'numeric',
+                  }).format(
+                    new Date(
+                      statisticsQuery.data?.pages.at(0)?.data.updatedAt ||
+                        '2024-01-01',
+                    ),
+                  )} 기준`}
+            </LabelMedium>
             <Spacing size={20} />
             {groupId ? (
               <ListItem
@@ -500,19 +521,19 @@ export default function Page() {
                 {'등록'}
               </Button>
             </div>
-            <TextInput
-              className='w-full mt-3'
+            <Textarea
               sx={{
+                width: '100%',
                 height: '96px',
                 backgroundColor: pallete.black,
                 color: pallete.white,
                 border: 0,
+                marginTop: '12px',
               }}
               aria-label='content'
               name='content'
               placeholder='비하 및 욕설은 자제해주세요! (최대 70자)'
               autoComplete='content'
-              size='large'
               value={commentRequest.content!}
               onChange={(e) => {
                 setCommentRequest({
@@ -522,7 +543,7 @@ export default function Page() {
               }}
             />
           </section>
-          <section className='px-5 flex flex-col items-center my-3 mb-28'>
+          <section className='px-5 flex flex-col items-center my-3'>
             {commentQuery.isFetching ? (
               <Spinner />
             ) : (
@@ -558,26 +579,36 @@ export default function Page() {
                     );
                   },
                 )}
-                <Pagination
-                  pageCount={commentQuery.data?.data.pageCount as number}
-                  currentPage={commentPage + 1}
-                  onPageChange={(e, n) => {
-                    const next = n - 1;
-
-                    if (
-                      next < 0 ||
-                      next > (commentQuery.data?.data.totalCount as number)
-                    )
-                      return;
-                    setCommentPage(next);
-                  }}
-                />
               </>
             )}
           </section>
+          <div className='w-full mb-28'>
+            {commentQuery.isFetching ? (
+              <Spinner />
+            ) : (
+              <Pagination
+                marginPageCount={0}
+                pageCount={commentQuery.data?.data.pageCount as number}
+                currentPage={commentPage + 1}
+                onPageChange={(e, n) => {
+                  const next = n - 1;
+
+                  if (
+                    next < 0 ||
+                    next > (commentQuery.data?.data.totalCount as number)
+                  )
+                    return;
+                  setCommentPage(next);
+                }}
+                showPages={{
+                  narrow: true,
+                }}
+              />
+            )}
+          </div>
         </MainLayout>
       </SystemLayout>
-    </>
+    </ThemeProvider>
   );
 }
 
