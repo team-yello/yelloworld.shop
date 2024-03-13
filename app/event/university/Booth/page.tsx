@@ -10,12 +10,14 @@ import { isAndroid, isIOS } from 'react-device-detect';
 
 export default function Page() {
   useEffect(() => {
-    if (isIOS) {
-      window.location.href = APP_STORE_URL;
-    } else if (isAndroid) {
-      window.location.href = GOOGLE_PLAY_URL;
-    } else {
-      window.location.href = LANDING_PAGE_URL;
+    if (typeof window !== 'undefined') {
+      if (isIOS) {
+        window.location.href = APP_STORE_URL;
+      } else if (isAndroid) {
+        window.location.href = GOOGLE_PLAY_URL;
+      } else {
+        window.location.href = LANDING_PAGE_URL;
+      }
     }
   }, []);
 
