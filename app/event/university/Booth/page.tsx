@@ -12,11 +12,11 @@ export default function Page() {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       if (isIOS) {
-        window.location.href = APP_STORE_URL;
+        window.location.replace(APP_STORE_URL);
       } else if (isAndroid) {
-        window.location.href = GOOGLE_PLAY_URL;
+        window.location.replace(GOOGLE_PLAY_URL);
       } else {
-        window.location.href = LANDING_PAGE_URL;
+        window.location.replace(LANDING_PAGE_URL);
       }
     }
   }, []);

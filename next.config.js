@@ -19,6 +19,9 @@ const nextConfig = {
     buildActivity: true,
     buildActivityPosition: 'bottom-right',
   },
+  experimental: {
+    typedRoutes: true,
+  },
 };
 
 module.exports = nextConfig;

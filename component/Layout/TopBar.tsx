@@ -52,7 +52,10 @@ export const TopBar = () => {
 
   // https://nextjs.org/docs/messages/react-hydration-error#solution-1-using-useeffect-to-run-on-the-client-only
   useEffect(() => {
-    if (localStorage.getItem('accessToken') !== undefined) {
+    if (
+      typeof localStorage !== 'undefined' &&
+      localStorage.getItem('accessToken') !== undefined
+    ) {
       setIsLogin(true);
     }
   }, []);
