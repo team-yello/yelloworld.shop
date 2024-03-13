@@ -299,7 +299,7 @@ export default function Page() {
             )}
             <Spacing size={12} />
             <LabelMedium className='text-center text-grayscales-600'>
-              {statisticsQuery.isFetching
+              {statisticsQuery.isLoading
                 ? ''
                 : `${new Intl.DateTimeFormat('ko-KR', {
                     year: 'numeric',
@@ -544,7 +544,7 @@ export default function Page() {
             />
           </section>
           <section className='px-5 flex flex-col items-center my-3'>
-            {commentQuery.isFetching ? (
+            {commentQuery.isLoading ? (
               <Spinner />
             ) : (
               <>
@@ -583,19 +583,21 @@ export default function Page() {
             )}
           </section>
           <div className='w-full mb-28'>
-            {commentQuery.isFetching ? (
+            {commentQuery.isLoading ? (
               <Spinner />
             ) : (
               <Pagination
                 marginPageCount={0}
-                pageCount={commentQuery.data?.data.pageCount as number}
+                // eslint-disable-next-line
+                pageCount={commentQuery.data?.data.pageCount! as number}
                 currentPage={commentPage + 1}
                 onPageChange={(e, n) => {
                   const next = n - 1;
 
                   if (
                     next < 0 ||
-                    next > (commentQuery.data?.data.totalCount as number)
+                    // eslint-disable-next-line
+                    next > (commentQuery.data?.data.totalCount! as number)
                   )
                     return;
                   setCommentPage(next);

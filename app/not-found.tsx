@@ -11,6 +11,7 @@ import { Button } from '@/component/Button';
 import yello_question_svg from '@/component/Icon/asset/yello-question.svg';
 import { pallete } from '@/styles/Color';
 import Link from 'next/link';
+import type { Route } from 'next';
 
 export default function NotFound() {
   return (
@@ -29,7 +30,7 @@ export default function NotFound() {
       </BodyMedium>
       <Spacing size={64} />
 
-      <Link href={'/school-attack'}>
+      <Link href={'/school-attack' as Route}>
         <Button
           className='text-black'
           size='L'
