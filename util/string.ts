@@ -15,3 +15,4 @@ export const MUTATION_KEY = {
 };
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
+export const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL;

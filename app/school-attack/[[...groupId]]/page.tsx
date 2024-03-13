@@ -543,7 +543,10 @@ export default function Page() {
               }}
             />
           </section>
-          <section className='px-5 flex flex-col items-center my-3'>
+          <section className='px-5 flex flex-col my-3'>
+            <Subtitle_02 className='ml-1 my-6 text-white'>
+              {'실시간 댓글'}
+            </Subtitle_02>
             {commentQuery.isLoading ? (
               <Spinner />
             ) : (
@@ -585,7 +588,7 @@ export default function Page() {
           <div className='w-full mb-28'>
             {commentQuery.isLoading ? (
               <Spinner />
-            ) : (
+            ) : commentQuery.data?.data.postCommentList?.length || 0 > 0 ? (
               <Pagination
                 marginPageCount={0}
                 // eslint-disable-next-line
@@ -606,6 +609,8 @@ export default function Page() {
                   narrow: true,
                 }}
               />
+            ) : (
+              <></>
             )}
           </div>
         </MainLayout>
