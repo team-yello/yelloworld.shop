@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "types": ["node", "react", "styled-components", "jest"],
+    "types": ["node", "react", "styled-components"],
     "target": "ESNext",
     "useDefineForClassFields": true,
     "lib": ["ESNext", "DOM", "DOM.Iterable", "WebWorker"],
