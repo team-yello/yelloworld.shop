@@ -562,7 +562,7 @@ export default function Page() {
                   pageCount={commentQuery.data?.data.pageCount as number}
                   currentPage={commentPage + 1}
                   onPageChange={(e, n) => {
-                    let next = n - 1;
+                    const next = n - 1;
 
                     if (
                       next < 0 ||
