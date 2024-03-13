@@ -298,23 +298,25 @@ export default function Page() {
               </div>
             )}
             <Spacing size={12} />
-            <LabelMedium className='text-center text-grayscales-600'>
-              {statisticsQuery.isLoading
-                ? ''
-                : `${new Intl.DateTimeFormat('ko-KR', {
-                    year: 'numeric',
-                    month: 'numeric',
-                    day: 'numeric',
-                    hour: 'numeric',
-                    minute: 'numeric',
-                    second: 'numeric',
-                  }).format(
-                    new Date(
-                      statisticsQuery.data?.pages.at(0)?.data.updatedAt ||
-                        '2024-01-01',
-                    ),
-                  )} 기준`}
-            </LabelMedium>
+            {statisticsQuery.isLoading || (
+              <LabelMedium className='text-center text-grayscales-600'>
+                {statisticsQuery.data?.pages.at(0)?.data.updatedAt
+                  ? `${new Intl.DateTimeFormat('ko-KR', {
+                      year: 'numeric',
+                      month: 'numeric',
+                      day: 'numeric',
+                      hour: 'numeric',
+                      minute: 'numeric',
+                      second: 'numeric',
+                    }).format(
+                      new Date(
+                        statisticsQuery.data?.pages.at(0)?.data
+                          .updatedAt as string,
+                      ),
+                    )} 기준`
+                  : ''}
+              </LabelMedium>
+            )}
             <Spacing size={20} />
             {groupId ? (
               <ListItem
@@ -563,16 +565,16 @@ export default function Page() {
                             {comment.userName}
                           </BodySmall>
                           <LabelSmall className='text-gray-600'>
-                            {new Intl.DateTimeFormat('ko-KR', {
-                              year: 'numeric',
-                              month: 'numeric',
-                              day: 'numeric',
-                              hour: 'numeric',
-                              minute: 'numeric',
-                              second: 'numeric',
-                            }).format(
-                              new Date(comment.createdAt || '2024-01-01'),
-                            )}
+                            {comment.createdAt
+                              ? new Intl.DateTimeFormat('ko-KR', {
+                                  year: 'numeric',
+                                  month: 'numeric',
+                                  day: 'numeric',
+                                  hour: 'numeric',
+                                  minute: 'numeric',
+                                  second: 'numeric',
+                                }).format(new Date(comment.createdAt))
+                              : null}
                           </LabelSmall>
                         </div>
                         <BodySmall className='text-gray-100'>
