@@ -83,7 +83,7 @@ export const getUserPostComment = async (page: number) => {
         postId: 1,
         page,
         sort: 'createdAt,desc',
-        size: 20,
+        size: 10,
       },
       headers: {
         'Cache-Control': 'no-cache',

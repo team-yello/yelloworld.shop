@@ -1,13 +1,12 @@
 import React from 'react';
 import { Metadata } from 'next';
-import { BaseStyles, ThemeProvider } from '@primer/react';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import '@/styles/globals.css';
 import { StyledComponentsRegistry } from '@/component/Provider/StyledComponentsRegistry';
 import { ReactQueryClientProvider } from '@/component/Provider/ReactQueryClientProvider';
-import Script from 'next/script';
+import { PrimerStyleProvider } from '@/component/Provider/PrimerStyleProvider';
 
 export const metadata: Metadata = {
   title: 'YELL:O - 너의 [ ??? ]에 설렜어',
@@ -28,9 +27,7 @@ export default function RootLayout({
         <ReactQueryClientProvider>
           <ReactQueryDevtools initialIsOpen={false} />
           <StyledComponentsRegistry>
-            <ThemeProvider>
-              <BaseStyles>{children}</BaseStyles>
-            </ThemeProvider>
+            <PrimerStyleProvider>{children}</PrimerStyleProvider>
           </StyledComponentsRegistry>
         </ReactQueryClientProvider>
       </body>
