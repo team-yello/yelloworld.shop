@@ -4,8 +4,7 @@ import {
   GetSchoolAttackStatistics,
   SchoolAttackStatistics,
 } from './schema';
-
-const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL;
+import { BASE_URL } from '@/util/string';
 
 export const getSchoolAttackStatistics = async (page: number) => {
   return await axios<BaseResponse<GetSchoolAttackStatistics>>({

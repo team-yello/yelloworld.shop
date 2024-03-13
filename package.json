@@ -5,7 +5,7 @@
   "homepage": "http://yelloworld.shop",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "NODE_ENV=production next build",
     "start": "next start",
     "lint": "next lint",
     "format": "yarn prettier . --write",
@@ -29,6 +29,7 @@
     "react": "latest",
     "react-device-detect": "^2.2.3",
     "react-dom": "latest",
+    "react-is": "latest",
     "styled-components": "^5",
     "tailwindcss": "3.3.3",
     "update-browserslist-db": "latest"
@@ -54,5 +55,6 @@
     "prettier": "3.0.2",
     "typescript": "latest",
     "typescript-plugin-css-modules": "^5.0.2"
-  }
+  },
+  "packageManager": "yarn@1.22.19"
 }

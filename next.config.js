@@ -12,8 +12,15 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  devIndicators: {
+    buildActivity: true,
+    buildActivityPosition: 'bottom-right',
+  },
   experimental: {
-    swcTraceProfiling: true,
+    typedRoutes: true,
   },
 };
 
