@@ -176,7 +176,7 @@ export default function Page() {
   };
 
   useEffect(() => {
-    sendGAEvent('school_attack_visit', {
+    sendGAEvent('event', 'school_attack_visit', {
       from: document.referrer,
     });
   }, []);
@@ -201,7 +201,7 @@ export default function Page() {
               onClick={async () => {
                 await navigator.clipboard.writeText(window.location.href);
                 alert('링크가 복사되었습니다!');
-                sendGAEvent('school_attack_copy_btn');
+                sendGAEvent('event', 'school_attack_copy_btn');
               }}
             >
               <Image className='mr-2' src={share_svg} alt='share' />
