@@ -72,6 +72,7 @@ import {
 import { redirect, useParams } from 'next/navigation';
 import { UserPostCommentRequest } from '@/repository/schema';
 import { getUserPostComment, postUserPostComment } from '@/repository/user';
+import { sendGAEvent } from '@next/third-parties/google';
 
 const maxWidth = 425;
 
@@ -174,6 +175,12 @@ export default function Page() {
     }
   };
 
+  useEffect(() => {
+    sendGAEvent('school_attack_visit', {
+      from: document.referrer,
+    });
+  }, []);
+
   return (
     <ThemeProvider colorMode='dark' preventSSRMismatch>
       <SystemLayout>
@@ -194,6 +201,7 @@ export default function Page() {
               onClick={async () => {
                 await navigator.clipboard.writeText(window.location.href);
                 alert('링크가 복사되었습니다!');
+                sendGAEvent('school_attack_copy_btn');
               }}
             >
               <Image className='mr-2' src={share_svg} alt='share' />
