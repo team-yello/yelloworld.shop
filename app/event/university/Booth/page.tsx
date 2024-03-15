@@ -5,7 +5,6 @@ import {
   GOOGLE_PLAY_URL,
   LANDING_PAGE_URL,
 } from '@/util/string';
-import { sendGTMEvent, sendGAEvent } from '@next/third-parties/google';
 import { useSearchParams } from 'next/navigation';
 import React, { Suspense, useEffect } from 'react';
 import { isAndroid, isIOS } from 'react-device-detect';
@@ -38,16 +37,14 @@ const GTMComponent = () => {
         platform = 'others';
         redirectTo = LANDING_PAGE_URL;
       }
-      setTimeout(
-        () =>
-          sendGAEvent('event', 'redirect', {
-            id: params.get('id'),
-            platform: platform,
-            from: document.referrer,
-          }),
-        1000,
-      );
-      window.location.replace(redirectTo);
+      setTimeout(() => {
+        const gtag = window.gtag;
+        gtag('event', 'download_link', {
+          id: params.has('id') ? params.get('id') : 'null',
+          platform: platform,
+        });
+        window.location.replace(redirectTo);
+      }, 1000);
     }
   }, [params]);
 

@@ -30,6 +30,16 @@ export default function NotFound() {
       </BodyMedium>
       <Spacing size={64} />
 
+      <Link href={'/event/university/Booth?id=home' as Route}>
+        <Button
+          className='text-black mb-3'
+          size='L'
+          backgroundColor={pallete['grayscales-50']}
+          // onClick={() => router?.push('/school-attack')}
+        >
+          {'앱 다운하러 가기'}
+        </Button>
+      </Link>
       <Link href={'/school-attack' as Route}>
         <Button
           className='text-black'
