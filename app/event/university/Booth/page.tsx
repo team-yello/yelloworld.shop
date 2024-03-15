@@ -39,6 +39,7 @@ const GTMComponent = () => {
         redirectTo = LANDING_PAGE_URL;
       }
       sendGTMEvent({
+        name: 'redirect',
         id: params.get('id'),
         platform: platform,
         from: document.referrer,
