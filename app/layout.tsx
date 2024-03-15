@@ -3,6 +3,8 @@ import { Metadata } from 'next';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import { GoogleAnalytics } from '@next/third-parties/google';
+
 import '@/styles/globals.css';
 import { StyledComponentsRegistry } from '@/component/Provider/StyledComponentsRegistry';
 import { ReactQueryClientProvider } from '@/component/Provider/ReactQueryClientProvider';
@@ -26,6 +28,7 @@ export default function RootLayout({
       <body>
         <Analytics />
         <SpeedInsights />
+        <GoogleAnalytics gaId='G-9Z53ZMP9VC' />
         <ReactQueryClientProvider>
           <ReactQueryDevtools initialIsOpen={false} />
           <StyledComponentsRegistry>

@@ -13,6 +13,7 @@
     "deploy": "touch out/.nojekyll && gh-pages -d out --dotfiles"
   },
   "dependencies": {
+    "@next/third-parties": "^14.1.3",
     "@primer/octicons-react": "latest",
     "@primer/react": "latest",
     "@tanstack/react-query": "^5.17.0",
