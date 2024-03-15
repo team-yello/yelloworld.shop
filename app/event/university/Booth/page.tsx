@@ -7,10 +7,21 @@ import {
 } from '@/util/string';
 import { sendGTMEvent } from '@next/third-parties/google';
 import { useSearchParams } from 'next/navigation';
-import React, { useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { isAndroid, isIOS } from 'react-device-detect';
 
 export default function Page() {
+  return (
+    <>
+      <div>{'redirecting...'}</div>
+      <Suspense>
+        <GTMComponent />
+      </Suspense>
+    </>
+  );
+}
+
+const GTMComponent = () => {
   const params = useSearchParams();
 
   useEffect(() => {
@@ -34,9 +45,5 @@ export default function Page() {
     }
   }, [params]);
 
-  return (
-    <>
-      <div>{'redirecting...'}</div>
-    </>
-  );
-}
+  return <div>{'data sending..'}</div>;
+};
