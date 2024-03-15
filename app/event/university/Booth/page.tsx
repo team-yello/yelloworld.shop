@@ -38,11 +38,15 @@ const GTMComponent = () => {
         platform = 'others';
         redirectTo = LANDING_PAGE_URL;
       }
-      sendGAEvent('event', 'redirect', {
-        id: params.get('id'),
-        platform: platform,
-        from: document.referrer,
-      });
+      setTimeout(
+        () =>
+          sendGAEvent('event', 'redirect', {
+            id: params.get('id'),
+            platform: platform,
+            from: document.referrer,
+          }),
+        1000,
+      );
       window.location.replace(redirectTo);
     }
   }, [params]);
