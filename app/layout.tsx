@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
-import { GoogleAnalytics } from '@next/third-parties/google';
+import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
 
 import '@/styles/globals.css';
 import { StyledComponentsRegistry } from '@/component/Provider/StyledComponentsRegistry';
@@ -29,6 +29,7 @@ export default function RootLayout({
         <Analytics />
         <SpeedInsights />
         <GoogleAnalytics gaId='G-9Z53ZMP9VC' />
+        <GoogleTagManager gtmId='GTM-KCF3MM5S' />
         <ReactQueryClientProvider>
           <ReactQueryDevtools initialIsOpen={false} />
           <StyledComponentsRegistry>
