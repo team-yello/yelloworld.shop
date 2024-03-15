@@ -26,22 +26,24 @@ const GTMComponent = () => {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
+      let redirectTo;
       let platform;
       if (isIOS) {
-        window.location.replace(APP_STORE_URL);
         platform = 'iOS';
+        redirectTo = APP_STORE_URL;
       } else if (isAndroid) {
-        window.location.replace(GOOGLE_PLAY_URL);
+        redirectTo = GOOGLE_PLAY_URL;
         platform = 'Android';
       } else {
-        window.location.replace(LANDING_PAGE_URL);
         platform = 'others';
+        redirectTo = LANDING_PAGE_URL;
       }
       sendGTMEvent({
         id: params.get('id'),
         platform: platform,
         from: document.referrer,
       });
+      window.location.replace(redirectTo);
     }
   }, [params]);
 
