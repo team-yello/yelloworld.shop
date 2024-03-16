@@ -43,6 +43,7 @@ import {
 
 import background_main from '@/public/background_main.svg';
 import main_logo from '@/public/main_logo.svg';
+import yello_sad_svg from '@/public/yello_sad.svg';
 import message_square_svg from '@/component/Icon/asset/message-square.svg';
 import add_and_share_svg from '@/component/Icon/asset/add-and-share.svg';
 import search_white_svg from '@/component/Icon/asset/search-white.svg';
@@ -346,9 +347,9 @@ export default function Page() {
               />
             )}
           </section>
-          <section className='bg-black'>
+          <section>
             <Collapse
-              className='flex flex-col items-center justify-start'
+              className='flex flex-col items-center justify-star'
               title={
                 <Subtitle_02 className='text-grayscales-400'>
                   {'점수 얻는 방법'}
@@ -394,12 +395,13 @@ export default function Page() {
               </div>
             </Collapse>
           </section>
-          <section className='bg-black px-5 mt-4 mb-10'>
+          <section className='px-5 mt-4 mb-10'>
             <TextInput
               className='w-full'
               sx={{
-                backgroundColor: pallete.black,
+                backgroundColor: 'black',
                 color: pallete.white,
+                border: `1px solid ${pallete['grayscales-300']}`,
               }}
               aria-label='groupName'
               name='groupName'
@@ -430,33 +432,46 @@ export default function Page() {
             />
             {searchKey && (
               <div className='gap-2 w-full h-60 my-2 overflow-y-scroll'>
-                {searchQuery.data?.pages.map((page, index) => (
-                  <Fragment key={index}>
-                    {page.data.statisticsList.map((statistics, index) => {
-                      return (
-                        <>
-                          <ListItem
-                            key={index}
-                            groupName={statistics.userGroupName}
-                            rank={statistics.rankNumber}
-                            diffRank={
-                              statistics.prevRankNumber - statistics.rankNumber
-                            }
-                            title={statistics.userGroupName}
-                            score={statistics.score}
-                            onClick={() => {
-                              router.push(
-                                `/school-attack/${statistics.userGroupName}`,
-                              );
-                            }}
-                          />
-                          <Spacing size={10} />
-                        </>
-                      );
-                    })}
-                  </Fragment>
-                ))}
-                <div ref={lastItemRef} />
+                {searchQuery.data?.pages.at(0)?.data.statisticsList.length ===
+                0 ? (
+                  <div className='w-full h-full flex flex-col items-center justify-center'>
+                    <Image src={yello_sad_svg} alt='yello_sad' />
+                    <BodySmall className='text-grayscales-300 mt-3'>
+                      {'찾는 학교의 결과가 없어요'}
+                    </BodySmall>
+                  </div>
+                ) : (
+                  <>
+                    {searchQuery.data?.pages.map((page, index) => (
+                      <Fragment key={index}>
+                        {page.data.statisticsList.map((statistics, index) => {
+                          return (
+                            <>
+                              <ListItem
+                                key={index}
+                                groupName={statistics.userGroupName}
+                                rank={statistics.rankNumber}
+                                diffRank={
+                                  statistics.prevRankNumber -
+                                  statistics.rankNumber
+                                }
+                                title={statistics.userGroupName}
+                                score={statistics.score}
+                                onClick={() => {
+                                  router.push(
+                                    `/school-attack/${statistics.userGroupName}`,
+                                  );
+                                }}
+                              />
+                              <Spacing size={10} />
+                            </>
+                          );
+                        })}
+                      </Fragment>
+                    ))}
+                    <div ref={lastItemRef} />
+                  </>
+                )}
               </div>
             )}
           </section>
@@ -504,7 +519,10 @@ export default function Page() {
               ))}
             </div>
           </section>
-          <section className='px-5 flex flex-col items-center my-3'>
+          <section className='px-5 flex flex-col my-3'>
+            <Subtitle_01 className='ml-1 my-6 text-white'>
+              {'댓글 달기'}
+            </Subtitle_01>
             <div className='flex justify-between w-full'>
               <TextInput
                 className='w-40'
@@ -532,7 +550,7 @@ export default function Page() {
                 className='w-16'
                 onClick={handleCommentSubmit}
               >
-                {'등록'}
+                <BodySmall>{'등록'}</BodySmall>
               </Button>
             </div>
             <Textarea
@@ -558,9 +576,9 @@ export default function Page() {
             />
           </section>
           <section className='px-5 flex flex-col my-3'>
-            <Subtitle_02 className='ml-1 my-6 text-white'>
+            <Subtitle_01 className='ml-1 my-6 text-white'>
               {'실시간 댓글'}
-            </Subtitle_02>
+            </Subtitle_01>
             {commentQuery.isLoading ? (
               <Spinner />
             ) : (
@@ -573,7 +591,7 @@ export default function Page() {
                         key={index + 20}
                       >
                         <div className='flex justify-between mb-2'>
-                          <BodySmall className='text-gray-600'>
+                          <BodySmall className='text-grayscales-600'>
                             {comment.userName}
                           </BodySmall>
                           <LabelSmall className='text-gray-600'>
