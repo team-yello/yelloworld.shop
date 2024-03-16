@@ -5,7 +5,6 @@ import {
   GOOGLE_PLAY_URL,
   LANDING_PAGE_URL,
 } from '@/util/string';
-import { sendGTMEvent } from '@next/third-parties/google';
 import { useSearchParams } from 'next/navigation';
 import React, { Suspense, useEffect } from 'react';
 import { isAndroid, isIOS } from 'react-device-detect';
@@ -26,22 +25,26 @@ const GTMComponent = () => {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
+      let redirectTo;
       let platform;
       if (isIOS) {
-        window.location.replace(APP_STORE_URL);
         platform = 'iOS';
+        redirectTo = APP_STORE_URL;
       } else if (isAndroid) {
-        window.location.replace(GOOGLE_PLAY_URL);
+        redirectTo = GOOGLE_PLAY_URL;
         platform = 'Android';
       } else {
-        window.location.replace(LANDING_PAGE_URL);
         platform = 'others';
+        redirectTo = LANDING_PAGE_URL;
       }
-      sendGTMEvent({
-        id: params.get('id'),
-        platform: platform,
-        from: document.referrer,
-      });
+      setTimeout(() => {
+        const gtag = window.gtag;
+        gtag('event', 'download_link', {
+          id: params.has('id') ? params.get('id') : 'null',
+          platform: platform,
+        });
+        window.location.replace(redirectTo);
+      }, 1000);
     }
   }, [params]);
 
