@@ -504,7 +504,10 @@ export default function Page() {
               ))}
             </div>
           </section>
-          <section className='px-5 flex flex-col items-center my-3'>
+          <section className='px-5 flex flex-col my-3'>
+            <Subtitle_01 className='ml-1 my-6 text-white'>
+              {'댓글 달기'}
+            </Subtitle_01>
             <div className='flex justify-between w-full'>
               <TextInput
                 className='w-40'
@@ -532,7 +535,7 @@ export default function Page() {
                 className='w-16'
                 onClick={handleCommentSubmit}
               >
-                {'등록'}
+                <BodySmall>{'등록'}</BodySmall>
               </Button>
             </div>
             <Textarea
@@ -558,9 +561,9 @@ export default function Page() {
             />
           </section>
           <section className='px-5 flex flex-col my-3'>
-            <Subtitle_02 className='ml-1 my-6 text-white'>
+            <Subtitle_01 className='ml-1 my-6 text-white'>
               {'실시간 댓글'}
-            </Subtitle_02>
+            </Subtitle_01>
             {commentQuery.isLoading ? (
               <Spinner />
             ) : (
@@ -573,7 +576,7 @@ export default function Page() {
                         key={index + 20}
                       >
                         <div className='flex justify-between mb-2'>
-                          <BodySmall className='text-gray-600'>
+                          <BodySmall className='text-grayscales-600'>
                             {comment.userName}
                           </BodySmall>
                           <LabelSmall className='text-gray-600'>
