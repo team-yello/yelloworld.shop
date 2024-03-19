@@ -9,7 +9,7 @@ import React, {
 } from 'react';
 import Image from 'next/image';
 import { css } from 'styled-components';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
   Dialog,
   Pagination,
@@ -64,7 +64,7 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import { MUTATION_KEY, QUERY_KEY } from '@/util/string';
+import { AMPLITUDE_KEY, MUTATION_KEY, QUERY_KEY } from '@/util/string';
 import {
   getSchoolAttackStatistics,
   getSchoolAttackStatisticsDetail,
@@ -74,10 +74,12 @@ import { redirect, useParams } from 'next/navigation';
 import { UserPostCommentRequest } from '@/repository/schema';
 import { getUserPostComment, postUserPostComment } from '@/repository/user';
 import { sendGAEvent } from '@next/third-parties/google';
+import * as amplitude from '@amplitude/analytics-browser';
 
 const maxWidth = 425;
 
 export default function Page() {
+  const params = useSearchParams();
   const router = useRouter();
   const { groupId } = useParams();
 
@@ -178,10 +180,15 @@ export default function Page() {
 
   useEffect(() => {
     if (typeof window != 'undefined') {
+      amplitude.init(AMPLITUDE_KEY as string, { defaultTracking: true });
+
       const gtag = window.gtag;
       gtag('event', 'school_attack_visit');
+      amplitude.logEvent('school_attack_visit', {
+        id: params.has('id') ? (params.get('id') as string) : undefined,
+      });
     }
-  }, []);
+  }, [params]);
 
   return (
     <ThemeProvider colorMode='dark' preventSSRMismatch>

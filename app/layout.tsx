@@ -9,7 +9,7 @@ import '@/styles/globals.css';
 import { StyledComponentsRegistry } from '@/component/Provider/StyledComponentsRegistry';
 import { ReactQueryClientProvider } from '@/component/Provider/ReactQueryClientProvider';
 import { PrimerStyleProvider } from '@/component/Provider/PrimerStyleProvider';
-import { WEB_URL } from '@/util/string';
+import { AMPLITUDE_KEY, WEB_URL } from '@/util/string';
 
 export const metadata: Metadata = {
   metadataBase: new URL(WEB_URL!),
