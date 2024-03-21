@@ -109,6 +109,9 @@ export default function Page() {
         userName: '',
         content: '',
       });
+      amplitude.logEvent('school_attack_comment_complete', {
+        id: params.has('id') ? (params.get('id') as string) : undefined,
+      });
     },
   });
   const statisticsQuery = useInfiniteQuery({
@@ -213,6 +216,11 @@ export default function Page() {
                 if (typeof window != 'undefined') {
                   const gtag = window.gtag;
                   gtag('event', 'school_attack_copy_btn');
+                  amplitude.logEvent('school_attack_copy_btn', {
+                    id: params.has('id')
+                      ? (params.get('id') as string)
+                      : undefined,
+                  });
                 }
               }}
             >
@@ -223,7 +231,9 @@ export default function Page() {
               className='w-4/6 h-14 rounded-3xl'
               size='None'
               backgroundColor={pallete['yello-main-500']}
-              onClick={() => router.push('/event/university/Booth')}
+              onClick={() =>
+                router.push('/event/university/Booth?id=school_attack')
+              }
             >
               {'나도 대항전 참여하기'}
             </Button>
@@ -418,6 +428,11 @@ export default function Page() {
               value={searchKey}
               onChange={(e) => {
                 setSearchKey(e.target.value);
+                amplitude.logEvent('school_attack_search', {
+                  id: params.has('id')
+                    ? (params.get('id') as string)
+                    : undefined,
+                });
               }}
               trailingAction={
                 <Button
