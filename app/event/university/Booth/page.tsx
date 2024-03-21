@@ -1,6 +1,7 @@
 'use client';
 
 import {
+  AMPLITUDE_KEY,
   APP_STORE_URL,
   GOOGLE_PLAY_URL,
   LANDING_PAGE_URL,
@@ -8,6 +9,7 @@ import {
 import { useSearchParams } from 'next/navigation';
 import React, { Suspense, useEffect } from 'react';
 import { isAndroid, isIOS } from 'react-device-detect';
+import * as amplitude from '@amplitude/analytics-browser';
 
 export default function Page() {
   return (
@@ -25,6 +27,8 @@ const GTMComponent = () => {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
+      amplitude.init(AMPLITUDE_KEY as string, { defaultTracking: true });
+
       let redirectTo;
       let platform;
       if (isIOS) {
@@ -42,6 +46,9 @@ const GTMComponent = () => {
         gtag('event', 'download_link', {
           id: params.has('id') ? params.get('id') : 'null',
           platform: platform,
+        });
+        amplitude.logEvent('download_link', {
+          id: params.has('id') ? (params.get('id') as string) : undefined,
         });
         window.location.replace(redirectTo);
       }, 1000);
