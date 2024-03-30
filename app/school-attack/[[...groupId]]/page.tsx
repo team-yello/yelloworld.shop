@@ -190,6 +190,11 @@ export default function Page() {
       amplitude.logEvent('school_attack_visit', {
         id: params.has('id') ? (params.get('id') as string) : undefined,
       });
+
+      alert(
+        'Yell:o 학교 대항전 시즌 1이 종료되었습니다. 시즌 2도 기대해주세요!',
+      );
+      router.push('/event');
     }
   }, [params]);
 
